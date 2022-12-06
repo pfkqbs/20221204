@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>返回脚本内容</title>
+</head>
+
+<body>
+    
+
+    <script>
+     
+
+        function evalscript(s) {
+            if (s.indexOf("<script") == -1) return s;
+            var p = /<script[^\>]*?>([^\x00]*?)<\/script>/gi;
+            var arr = [];
+            while ((arr = p.exec(s))) {
+                var p1 = /<script[^\>]*?src=\"([^\>]*?)\"[^\>]*?(reload=\"1\")?(?:charset=\"([\w\-]+?)\")?><\/script>/i;
+                var arr1 = [];
+                arr1 = p1.exec(arr[0]);
+                if (arr1) {
+                    appendscript(arr1[1], "", arr1[2], arr1[3]);
+                } else {
+                    p1 = /<script(.*?)>([^\x00]+?)<\/script>/i;
+                    arr1 = p1.exec(arr[0]);
+                    appendscript("", arr1[2], arr1[1].indexOf("reload=") != -1);
+                }
+            }
+            return s;
+        }
+        evalscript()
+    </script>
+
+</body>
+
+</html>

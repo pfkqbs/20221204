@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>转义html标签</title>
+</head>
+
+<body>
+
+    <script>
+
+         function HtmlEncode(text) {
+            return text
+                .replace(/&/g, "&")
+                .replace(/\"/g, '"')
+                .replace(/</g, "<")
+                .replace(/>/g, ">");
+        }
+        let html = '<div>1&&11</div>'
+
+        let fun = HtmlEncode(html)
+        console.log(fun);
+    </script>
+
+</body>
+
+</html>

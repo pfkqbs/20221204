@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回到顶部</title>
+</head>
+
+<body>
+    <div>
+        第一行
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        
+        <button id="goTop" style="background: red;">点击</button>
+    </div>
+    <script>
+
+        function backTop(btnId) {
+            var btn = document.getElementById(btnId);
+            var d = document.documentElement;
+            var b = document.body;
+            window.onscroll = set;
+
+            btn.style.display = "none";
+            btn.onclick = function () {
+                btn.style.display = "none";
+                window.onscroll = null;
+                this.timer = setInterval(function () {
+                    d.scrollTop -= Math.ceil((d.scrollTop + b.scrollTop) * 0.1);
+                    b.scrollTop -= Math.ceil((d.scrollTop + b.scrollTop) * 0.1);
+                    if (d.scrollTop + b.scrollTop == 0)
+                        clearInterval(btn.timer, (window.onscroll = set));
+                }, 10);
+            };
+            function set() {
+                btn.style.display = d.scrollTop + b.scrollTop > 100 ? "block" : "none";
+            }
+        }
+
+        backTop("goTop");
+    </script>
+
+</body>
+
+</html>

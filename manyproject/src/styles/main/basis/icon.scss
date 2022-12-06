@@ -1,0 +1,24 @@
+i[class^=icon] {
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: cover;
+}
+.icon-size-18{
+    width: 18px;
+    height: 18px;
+}
+.icon-size-27{
+    width: 27px;
+    height: 27px;
+}
+.icon-mb3{
+    margin-bottom: -3px;
+}
+// .icon-emil {background-image: url(~@/assets/icon/icon-email.png);}
+.icon-emil {background-image: url(~@/assets/logo.png);}
+.icon-eye-on {background-image: url(~@/assets/icon_eye_on.png);}
+.icon-eye-off {background-image: url(~@/assets/icon_eye_off.png);}
+
+.svg-icon-24{  font-size: 24px; }
+.svg-icon-18{  font-size: 18px; }

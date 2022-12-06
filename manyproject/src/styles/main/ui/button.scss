@@ -1,0 +1,40 @@
+.button-ui{
+    display: inline-block;
+    border: none;
+    padding: 0;
+    background: none;
+    span{
+        display: block;
+    }
+
+}
+/* 设置圆角 */
+.button-ui-round {
+    border-radius: 100px;
+}
+/* 设置宽度 */
+.button-ui-block {
+    display: block;
+    width: 100%;
+}
+/* 设置背景色 */
+.button-ui-main {
+    background: $color-main;
+    span{
+        color: #fff;
+    }
+}
+/* 设置大型 */
+.button-ui-large {
+    span{
+        padding: 17px 0;
+        font-size: 16px;
+    }
+}
+/* 设置小型 */
+.button-ui-small {
+    span{
+        padding: 14px 0;
+        font-size: 14px;
+    }
+}
