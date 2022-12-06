@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Object.freeze()方法</title>
+	</head>
+	<body>
+		<script>
+			
+			// 定义一个对象
+			var objName = {
+				age:"18",
+				fun:function(){
+					console.log(1111)
+				},
+				jl:{"大学":"4","小学":"3","中学":"1"}
+			} ;
+
+			// 使用Object.freeze()方法  冻结对象
+			let obj2 = Object.freeze(objName) 
+
+			objName.age = "111"
+
+			console.log(objName); 
+			console.log(obj2); 
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Object.defineProperty()方法</title>
+	</head>
+	<body>
+		<p></p>
+		<script>
+			function Person(name,age,id){
+				this.name = name;
+				this.age = age ;
+				this.id = id;
+			}
+			var zhangsan = new Person("张三",18,12345678912345678)
+			
+			
+			console.log(zhangsan.name)
+			
+			//
+			Object.defineProperty(zhangsan,"id",{
+				configurable:true, //是否可以删除  false表示不可以删除
+				enumerable:true, //是否可以枚举  false表示不可以枚举
+				// value:123,//设置对应的属性值
+				// writable:true,//是否可以修改值  false表示不可以修改,但是可以通过value修改
+				get:function(){
+					console.log("我触发了"); 
+					},
+				set:function(newValue){
+					console.log(newValue); 
+				}
+			})
+
+		</script>
+	</body>
+</html>

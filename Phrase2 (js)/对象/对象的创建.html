@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>2</title>
+	</head>
+	<body>
+		<script>
+			// 第一种： 字面量法
+			// var objName = [] //Array对象 
+			var objName = {
+				age:"18",
+				fun:function(){
+					console.log(1111)
+				},
+				// i:"1111"
+			} ;
+			// 第二种： 通过new关键字创建对象
+			var objName1 = new Object(); //Object对象
+			// var arr = new Array() //Array对象
+			// var fn = new Function()  //函数对象
+			// var  str - new String()  //字符串对象
+			objName.name = "张三";//对象属性赋值			
+			objName.name = "李四";	//对象属性赋值		
+			console.log("objName.age",objName.age)   //objName.age 18
+			
+			// console.log(a)
+			var a = "age"
+			
+			for(var i in objName){
+				console.log("typeof i",typeof i)   //typeof i string
+				console.log("i",i) //  i age为属性名
+				// console.log(objName.i)
+				console.log("objName.age",objName.age)  //objName.age 18
+			}
+			
+			var  arr = [1,2,3,4,5,6];
+			for(var i = 0 ; i < arr.length ; i++){
+				console.log("typeof i",typeof i)  //  6 typeof i number
+			}
+			for(var i in arr){
+				console.log("typeof i",typeof i)//  6 typeof i string
+				arr[i] = arr[i] + i
+			}
+			console.log("arr",arr)   //arr (6) ["10", "21", "32", "43", "54", "65"]
+		</script>
+	</body>
+</html>

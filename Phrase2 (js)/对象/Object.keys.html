@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Object.keys()方法</title>
+	</head>
+	<body>
+		<p></p>
+		<script>
+			
+			// 定义一个对象
+			var objName = {
+				age:"18",
+				fun:function(){
+					console.log(1111)
+				},
+				jl:{"大学":"4","小学":"3","中学":"1"}
+			} ;
+
+			// 使用Object.keys()方法  拿取对象的属性值
+			let arr = Object.keys(objName) 
+
+			// 遍历Object.keys返回的对象键名的数组
+			arr.forEach((item)=>{console.log("objName[item]",objName[item]);})
+
+			// console.log(arr); 
+
+		</script>
+	</body>
+</html>
