@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue3 数据响应式的原理</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+
+        // 原数据
+        let person = {
+            name: "张三",
+            age: 18
+        }
+        // 模拟vue3中实现数据响应式
+        const p = new Proxy(person, {
+
+            // 读取的时候调用
+            get(target, propName) {
+                console.log(`有人读取p身上的${propName}属性了`, target, propName);
+                return target[propName]
+            },
+
+            // 新增，修改的时候调用
+            set(target, propName, value) {
+                console.log("有人修改了p身上的${propName}属性了，我要去更新界面了！");
+                console.log(target, propName, value);
+                target[propName] = value
+            },
+
+            //删除时候,调用
+            deleteProperty(target, propName) {
+                console.log("有人删除了p身上的${propName}属性了，我要去更新界面了！");
+                return delete target[propName]
+            }
+        })
+
+
+    </script>
+</body>
+
+</html>

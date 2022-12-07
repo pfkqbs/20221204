@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue2 数据响应式的原理</title>
+</head>
+<body>
+    <script type="text/javascript">
+
+        // 原数据
+        let person = {
+            name:"张三",
+            age:18
+        }
+
+        // 模拟vue2中实现数据响应式
+        // 通过Object.keys()拿到person的每一个属性去循环一下，去监听数据的读取及修改
+        let p = {}  ;
+
+        let personkeys = Object.keys(person);
+
+        // console.log(personkeys);
+
+        personkeys.forEach( item =>{
+            // console.log(item);
+
+            Object.defineProperty(p,item,{
+                configurable:true,
+
+            get(){
+                // 有人读取 item 时，调用
+                return item
+            },
+            set(value){
+                console.log("有人修改了 属性，被我发现了，我要去更新界面")
+                //有人修改  item 时 调用
+                item = value
+            },
+        })
+        })
+        
+
+       
+
+    </script>
+</body>
+</html>

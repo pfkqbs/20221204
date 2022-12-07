@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>对象的删除</title>
+	</head>
+	<body>
+		<script>
+			//创建一个对象
+			var obj = {
+				name:"zhangsan",
+				age : 18,
+				fn:function(){
+					console.log("我是对象的fn方法")
+				}
+			}
+			 //删除obj的age
+			var a = delete obj.age ;
+			console.log("删除obj的age",a)
+			
+			
+			// 全局变量都是window对象的属性  全局函数都是window对象的方法
+
+			//定义一个显示全局变量b,
+			var b = 10;
+			console.log("显示全局变量b",b);
+			console.log("显示全局变量b",window.b)
+
+
+			//删除全局变量b
+			var boo = delete b
+			console.log("删除全局变量b了吗?",boo)  //false
+
+			console.log("obj.age",obj.age)  //对照第一个打印结果,为什么obj.age为第一次为true,第二次为undefined
+			console.log("全局变量b",window.b)
+			
+			//定义一个隐式全局变量c
+			c = 20;
+			console.log("隐式全局变量c,删除之前",window.c)
+			var boo1 = delete c ;
+			console.log("删除隐式全局变量c了吗?",boo1)    //false
+			console.log("隐式全局变量c删除之后",window.c)
+			
+			//定义全局函数
+			function fn(){
+				console.log("我是全局函数fn")
+			}
+			
+			var fn1 = function(){
+				console.log(333)
+			}
+			fn();
+			window.fn();
+			
+			// var  boo2 = delete obj.fn ;
+			// console.log(boo2)
+			// // console.log(obj.fn())
+			// var  boo3 = delete window.fn ;
+			// console.log(boo3)
+			
+			// obj.name = undefined;
+			
+			// console.log(obj)
+			
+			// for(var i in obj){
+			// 	console.log(i)
+			// }
+			
+			// var  arr = ["hello","world" , "js" , "css" , "html"];
+			// var boo5 = delete arr[1];
+			// console.log(boo5)
+			// console.log(arr)
+			
+		</script>
+		
+	</body>
+</html>
