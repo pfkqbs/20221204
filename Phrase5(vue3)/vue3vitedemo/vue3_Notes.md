@@ -665,5 +665,151 @@ console.log("111",x1,x2);
     - `slots` : 收到的插槽内容，相当于 `this.$slots`
     - `emit` :  分发自定义事件的函数，相当于 `this.$emit`
 
+## 150 `computed` 计算属性
+`computed` 函数
+  与 `vue2 .x` 中的 `computed` 配置功能一致
+  写法：
+
+```js
+import { computed } from "vue"
+setup(){
+  //计算属性简写
+  let fullName = computed( () =>{
+    return person.firstName + '-' + person.lastName
+  })
+  //计算属性的完整写法
+  let fullName = computed( {
+    get(){
+      return person.firstName + '-' + person.lastName
+    },
+    set(value){
+      const nameArr = value.split('-')
+      person.firstName = nameArr[0]
+      person.lastName = nameArr[1]
+    }
+  } )
+```
+
+## 151 `watch` 属性
+`watch` 函数
+  - 与 `vue 2 .x` 中的 `watch` 配置功能一致
+  - 两个小坑：
+    - 监视 `reactive` 定义的响应式数据时， `oldValue` 无法正确获取，强制开启深度监视（ `deep` 配置失效）
+    - 监视 `reactive` 定义的响应式数据中某个属性时， `deep` 配置失效
+
+情况一： 监视 `ref` 定义的响应式数据
+```js
+//情况一： 监视ref 定义的响应式数据
+watch(sum,(newValue,oldValue)=>{
+  console.log('sum变化了'，newValue,oldValue)
+},{immediate:true})  
+```
+情况二： 监视多个 `ref` 定义的响应式数据
+```js
+//情况二： 监视多个ref定义的响应式数据
+watch([sum,msg],(newValue,oldValue)=>{
+  console.log('sum 或者 msg 变化了'，newValue,oldValue)
+},{immediate:true})
+
+```
+情况三： 监视 `reactive` 定义的响应式数据
+若 `watch` 监视的是 `reactive` 定义的响应式数据，则无法正确获得 `oldValue`
+若 `watch` 监视的是 `reactive` 定义的响应式数据，则强制开启了深度监视
+```js
+//情况三： 监视 reactive 定义的响应式数据
+//若 watch 监视的 reactive 定义的响应式数据，则无需正确获得 oldValue
+//若 watch 监视的是 reactive 定义的响应式数据，则强制开启了深度监视
+
+watch(person,(newValue,oldValue)=>{
+  console.log('person变化了'，newValue,oldValue)
+},{immediate:true,deep:true}) //此处的deep 配置不在奏效
+
+```
+情况四： 监视的 `reactive` 定义的响应式数据中的某个属性
+```js
+// 情况四： 监视的reactive 定义的响应式数据中的某个属性
+watch( ()=>person.job,(newValue,oldValue)=>{
+  console.log('person 的 job 变化了'，newValue,oldValue) 
+},{immediate:true,deep:true})
+
+```
+
+## 154 `watchEffect`  监视函数
+
+- `watch` 的套路是： 既要指明监视的属性，也要指明监视的回调
+- `watchEffect` 的套路是：不用指明监视哪个属性，监视的回调中用到哪个属性，那就监视哪个属性
+- `watchEffect` 优点像`computed`：
+    - 但是 `computed` 注重的计算出来的回调的值（回调函数的返回值），所以必须要写返回值
+    - 而 `watchEffect` 更注重的是过程（回调函数的函数体），所以不用写返回值
+
+```js
+//watchEffect 所指定的回调中用到的数据只要发生变化，则直接重新执行回调
+watchEffect( ()=>{
+	const x1 = sum.value
+	const x2 = person.age
+  console.log('watchEffect 说指定的回调执行了！')
+})
+```
+
+## 155 生命周期函数
+- `Vue 3.0 `中可以继续使用`vue 2.0` 中的生命周期钩子，但是有两个被更名
+	- `beforedestory` 改名为 `beforeUnmount`
+	- `destory` 改名为 `unmounted`
+
+- `Vue 3.0` 也提供了 `Composition API` 形式的生命周期钩子，与 `Vue 2.x` 中钩子对应关系如下：
+	- `beforeCreate` ====> `setup()`
+	- `created` =========> `setup()`
+	- `beforeMount` =====> `onBeforeMount`
+	- `mounted` =========> `onMounted`
+	- `beforeUpdate` ====> `onBeforeUpdate`
+	- `updated` =========> `onUpdated`
+	- `beforeUnmount` ===> `onBeforeUnmount`
+	- `unmounted` =======> `onUnmounted`
+
+## 156 自定义 `hook` 函数
+
+- 什么事 `hook` 函数？ ----本质事一个函数，把 `setup` 函数中使用的 `Composition API` 进行了封装
+
+- 类似于 `Vue 2.x` 中的 `mixin`
+
+- 自定义 `hook` 的优势： 复用代码，让 `setup` 中的逻辑更清楚易懂
 
 
+## 156 `ToRef` 
+
+作用： 创建一个 `ref` 对象， 其 `value` 值 指向另一个对象中的某个属性值
+
+语法：` const name = toRef(person,'name')`
+
+应用：要将响应式对象中的某个属性单独提供给外部使用时。
+
+扩展： `toRefs` 与 `toRef` 功能一致，但可以批量创建多个 `ref` 对象，语法：`toRefs(person)`
+
+# 158 其他 `Componsition API` 
+
+## 1 `shallowReactive` 与 `shallowRef` 
+- **`shallowReactive`** : 只处理对象最外层属性的响应式（浅响应式）
+- **`shallowRef`** : 只处理基本数据类型的响应式，不进行对象的响应式处理
+- **什么时候用？**
+	如果有一个对象数据，结构比较深，但变化时只是外层属性变化 ===》 `shallowReactive`
+	如果有一个对象数据，后续功能不会修改该对象中的属性，而是生新的对象来替换 ====》 shallowRef
+
+## 159 
+
+## 2 `readonly` 与 `shallowReadonly`
+ 
+- **`readonly`** : 让一个响应式数据变为只读的（ 深只读 ）
+
+- **`shallowReadonly`** ： 让一个响应式数据变为只读的。（ 浅只读 ）
+
+- **应用场景**： 不希望数据被修改时，比如别人的数据，你只能用，但是不能修改。
+
+## 160 `toRaw` 与 `markRaw`
+- **`toRaw`** : 
+	- **作用**： 将一个由 reactive 生成的 <font color="red">响应式对象</font> 转为 <font color="red">普通对象</font>。
+	- **使用场景**： 用于读取响应式对象对应的普通对象，对这个普通对象的所有操作，不会引起页面更新。
+- **`markRaw`** : 
+	- **作用**：标记一个对象，使其永远不会再成为响应式对象。
+	- **应用场景**：
+		- 1 有些值不应该设置为响应式的，例如复杂的第三方类库等。
+		- 2 当渲染具有不可变数据源的大列表时，跳过响应式转换可以提高性能。
