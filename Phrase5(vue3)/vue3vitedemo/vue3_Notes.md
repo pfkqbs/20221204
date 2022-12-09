@@ -1,23 +1,331 @@
 136 尚硅谷
 [toc]
-## 136 Vue3 带来了什么？
+# `vue` 基础
+## 初识 `Vue`
+- 初识`Vue`：
+	- 1.想让`Vue`工作，就必须创建一个`Vue`实例，且要传入一个配置对象；
+	- 2.`root`容器里的代码依然符合`html`规范，只不过混入了一些特殊的`Vue`语法；
+	- 3.`root` 容器里的代码被称为【`Vue`模板】；
+	- 4.`Vue`实例和容器是一一对应的；
+	- 5.真实开发中只有一个`Vue`实例，并且会配合着组件一起使用；
+	- 6.`{{xxx}}`中的`xxx`要写`js`表达式，且`xxx`可以自动读取到`data`中的所有属性；
+	- 7.一旦`data`中的数据发生改变，那么页面中用到该数据的地方也会自动更新 ；
+
+	- 注意区分：`js`表达式 和 `js`代码(语句)
+		- 1.表达式：一个表达式会产生一个值，可以放在任何一个需要值的地方：
+			- (1). `a`
+			- (2). `a+b`
+			- (3). `demo(1)`
+			- (4). `x === y ? 'a' : 'b'`
+
+		- 2.`js`代码(语句)
+			- (1). `if(){}`
+			- (2). `for(){}`
+
+## `Vue`模板语法有2大类：
+
+- 1.插值语法：
+
+	- **功能**：用于解析标签体内容。
+	- **写法**：`{{xxx}}`，`xxx`是`js`表达式，且可以直接读取到`data`中的所有属性。
+
+- 2.指令语法：
+
+	- **功能**：用于解析标签（包括：标签属性、标签体内容、绑定事件.....）。
+	- **举例**：`v-bind:href="xxx"` 或  简写为 `:href="xxx"`，`xxx`同样要写`js`表达式，且可以直接读取到data中的所有属性。
+	- **备注**：`Vue`中有很多的指令，且形式都是：`v-????`，此处我们只是拿`v-bind`举个例子。
+
+## `Vue`中有2种数据绑定的方式：
+
+- 1.**单向绑定(`v-bind`)**：数据只能从`data`流向页面。
+
+- 2.**双向绑定(`v-model`)**：数据不仅能从`data`流向页面，还可以从页面流向`data`。
+
+- **备注**：
+	- 1.双向绑定一般都应用在表单类元素上（如：`input`、`select`等）
+	- 2.`v-model:value` 可以简写为 `v-model`，因为`v-model`默认收集的就是`value`值。
+
+## 136 `Vue3` 带来了什么？
     （2600+次提交，30+RFC（请求意见稿），600+次PR）
     **Vue3github**:https://github.com/vuejs/vue-next/releases/tag/v3.0.0
 
 - 性能提升
 - 源码的升级:
-    使用Proxy代替defineProperty实现响应式
-    重写虚拟Dom和使用`Tree-shaking`去除没有使用的代码
-- 拥抱TypeScript
+    使用 `Proxy` 代替 `defineProperty` 实现响应式
+    重写虚拟 `Dom` 和使用`Tree-shaking`去除没有使用的代码
+- 拥抱 `TypeScript`
 - 新的特性：
-    组合式API
-    - setup配置
-    - ref和reactive
-    - watchhe与watchEffect
+    组合式`API`
+    - `setup`配置
+    - `ref`和`reactive`
+    - `watch`与`watchEffect`
 
     新的内置组件：
     - 
     其他的改变：
+
+# vuex 
+## 5.1 理解 `vuex`
+### 5.1.1 `vuex` 是什么
+- 1. 概念：专门在 `Vue` 中实现集中式状态（数据）管理的一个 `Vue` 插件，对 `vue` 应用中多个组件的共享状态进行集中式的管理（读/写），也是一种组件间通信的方式，且适用于任意组件间通信。
+- 2. `Github` 地址: https://github.com/vuejs/vuex
+
+### 5.1.2 什么时候使用 `Vuex`
+- 1. 多个组件依赖于同一状态
+- 2. 来自不同组件的行为需要变更同一状态
+
+### 5.1.3 小案例
+- `vue` 实现计数器（未使用`vuex`）
+```vue
+<!-- components/count.vue -->
+<template>
+	<div>
+		<h1>当前求和为：{{sum}}</h1>
+		<select v-model.number="n">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+		</select>
+		<button @click="increment">+</button>
+		<button @click="decrement">-</button>
+		<button @click="incrementOdd">当前求和为奇数再加</button>
+		<button @click="incrementWait">等一等再加</button>
+	</div>
+</template>
+
+<script>
+	export default {
+		name:'Count',
+		data() {
+			return {
+				n:1, //用户选择的数字
+				sum:0 //当前的和
+			}
+		},
+		methods: {
+			increment(){
+				this.sum += this.n
+			},
+			decrement(){
+				this.sum -= this.n
+			},
+			incrementOdd(){
+				if(this.sum % 2){
+					this.sum += this.n
+				}
+			},
+			incrementWait(){
+				setTimeout(()=>{
+					this.sum += this.n
+				},500)
+			},
+		},
+	}
+</script>
+
+<style lang="css">
+	button{
+		margin-left: 5px;
+	}
+</style>
+
+```
+- `vuex` 实现 计数器
+
+```vue
+<!-- components/count.vue -->
+<template>
+	<div>
+		<h1>当前求和为：{{$store.state.sum}}</h1>
+		<select v-model.number="n">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+		</select>
+		<button @click="increment">+</button>
+		<button @click="decrement">-</button>
+		<button @click="incrementOdd">当前求和为奇数再加</button>
+		<button @click="incrementWait">等一等再加</button>
+	</div>
+</template>
+
+<script>
+	export default {
+		name:'Count',
+		data() {
+			return {
+				n:1, //用户选择的数字
+			}
+		},
+		methods: {
+			increment(){
+				//actions中没有逻辑，直接commit，跳过了dispatch到actions
+				this.$store.commit('JIA',this.n)
+			},
+			decrement(){
+				//actions中没有逻辑，直接commit，跳过了dispatch到actions
+				this.$store.commit('JIAN',this.n)
+			},
+			incrementOdd(){
+				this.$store.dispatch('jiaOdd',this.n)
+			},
+			incrementWait(){
+				this.$store.dispatch('jiaWait',this.n)
+			},
+		},
+		mounted() {
+			console.log('Count',this)
+		},
+	}
+</script>
+
+<style lang="css">
+	button{
+		margin-left: 5px;
+	}
+</style>
+
+```
+
+```js
+//store/index.js
+
+//该文件用于创建Vuex中最为核心的store
+import Vue from 'vue'
+//引入Vuex
+import Vuex from 'vuex'
+//应用Vuex插件
+Vue.use(Vuex)
+
+//准备actions——用于响应组件中的动作
+const actions = {
+	/* jia(context,value){
+		console.log('actions中的jia被调用了')
+		context.commit('JIA',value)
+	},
+	jian(context,value){
+		console.log('actions中的jian被调用了')
+		context.commit('JIAN',value)
+	}, */
+	jiaOdd(context,value){
+		console.log('actions中的jiaOdd被调用了')
+		if(context.state.sum % 2){
+			context.commit('JIA',value)
+		}
+	},
+	jiaWait(context,value){
+		console.log('actions中的jiaWait被调用了')
+		setTimeout(()=>{
+			context.commit('JIA',value)
+		},500)
+	}
+}
+//准备mutations——用于操作数据（state）
+const mutations = {
+	JIA(state,value){
+		console.log('mutations中的JIA被调用了')
+		state.sum += value
+	},
+	JIAN(state,value){
+		console.log('mutations中的JIAN被调用了')
+		state.sum -= value
+	}
+}
+//准备state——用于存储数据
+const state = {
+	sum:0 //当前的和
+}
+
+//创建并暴露store
+export default new Vuex.Store({
+	actions,
+	mutations,
+	state,
+})
+```
+### 5.1.4  `Vuex` 原理图
+<img src="./images/vuex.png" width="500px" />
+
+### 搭建 `vuex` 环境
+- 1 创建文件 `src/store/index.js`
+
+```js
+
+//该文件用于创建Vuex中最为核心的store
+import Vue from 'vue'
+
+//引入Vuex
+import Vuex from 'vuex'
+
+//应用Vuex插件
+Vue.use(Vuex)
+
+//准备actions——用于响应组件中的动作
+const actions = {}
+
+//准备mutations——用于操作数据（state）
+const mutations = {}
+
+//准备state——用于存储数据
+const state = {
+	sum:0 //当前的和
+}
+
+//创建并暴露store
+export default new Vuex.Store({
+	actions,
+	mutations,
+	state,
+})
+```
+
+- 2 在`main.js` 中创建`vm` 时传入 `store` 配置项
+
+```js
+//...
+//引入store
+import store from './store'
+//...
+//创建vm
+new Vue({
+	el:'#app',
+	render: h => h(App),
+	store
+})
+```
+
+## 5.2 `vuex` 核心概念和 API
+
+### 5.2.1 `state`
+- 1. `vuex` 管理的状态对象
+- 2. 它应该是唯一的
+- 3. 示例代码：
+
+### 5.2.2 `actions`
+- 1. 值为一个**对象**，包含多个响应用户动作的回调函数
+- 2. 通过 `commit( )`来触发 `mutation` 中函数的调用, 间接更新 `state`
+- 3. 如何触发 `actions` 中的回调？  
+	在组件中使用: `$store.dispatch('对应的 action 回调名') 触发`
+- 4. 可以包含异步代码（定时器, `ajax` 等等）
+- 5. 示例代码：
+
+### 5.2.3 `mutations`
+- 1. 值是一个**对象**，包含多个直接更新 `state` 的方法
+- 2. 谁能调用 `mutations` 中的方法？如何调用？   
+	在 `action` 中使用：`commit('对应的 mutations 方法名') 触发`
+- 3. `mutations` 中方法的特点：不能写异步代码、只能单纯的操作 state
+- 4. 示例代码：
+
+### 5.2.4 `getters`
+- 1. 值为一个**对象**，包含多个用于返回数据的函数
+- 2. 如何使用？—— `$store.getters.xxx`
+- 3. 示例代码：
+### 5.2.5 `modules`
+- 1. 包含多个 `module`
+- 2. 一个 `module` 是一个 `store` 的配置对象
+- 3. 与一个组件（包含有共享数据）对应
+# 
+
 
 ## 创建一个`vue3`的项目工程
 ### 137、使用  `vue/cli`  创建
@@ -110,7 +418,7 @@ createApp(App).mount('#app')
  在 `chrome` 浏览器应用商店搜索进行安装
  或者在 `github` 上下载进行安装
 
-## 141 常用的`Composition API`
+# 141 常用的`Composition API`
 拉开序幕的`setup`
 
 - 1 理解：`Vue3.0` 重点额一个新的配置项，值是一个**函数**。
@@ -134,7 +442,7 @@ createApp(App).mount('#app')
     
     > 如果有重名，`setup`优先
     
-    - `setup`不能是一个`async` 函数， 因为返回值不再是`return` 的对象，而是`promise` ，模板看不到 `return` 对象的属性
+    - `setup`不能是一个`async` 函数， 因为返回值不再是`return` 的对象，而是`promise` ，模板看不到 `return` 对象的属性 （后期也可以返回一个 `promise` 实例，但需要 `Suspense` 和异步组件的配合 ）
 
 ```vue
 <!-- App.vue -->
@@ -808,8 +1116,252 @@ watchEffect( ()=>{
 - **`toRaw`** : 
 	- **作用**： 将一个由 reactive 生成的 <font color="red">响应式对象</font> 转为 <font color="red">普通对象</font>。
 	- **使用场景**： 用于读取响应式对象对应的普通对象，对这个普通对象的所有操作，不会引起页面更新。
+
 - **`markRaw`** : 
 	- **作用**：标记一个对象，使其永远不会再成为响应式对象。
 	- **应用场景**：
 		- 1 有些值不应该设置为响应式的，例如复杂的第三方类库等。
 		- 2 当渲染具有不可变数据源的大列表时，跳过响应式转换可以提高性能。
+
+## 161 `customRef`	
+
+**作用**：创建一个自定义的 `ref` ，并对其依赖项跟踪和更新触发进行显式控住
+
+实现防抖效果：
+```vue
+<template>
+	<input type="text" v-model="keyWord">
+	<h3>{{keyWord}}</h3>
+</template>
+
+<script>
+	import {ref,customRef} from 'vue'
+	export default {
+		name: 'App',
+		setup() {
+			//自定义一个ref——名为：myRef
+			function myRef(value,delay){
+				let timer
+				return customRef((track,trigger)=>{
+					return {
+						get(){
+							console.log(`有人从myRef这个容器中读取数据了，我把${value}给他了`)
+							track() //通知Vue追踪value的变化（提前和get商量一下，让他认为这个value是有用的）
+							return value
+						},
+						set(newValue){
+							console.log(`有人把myRef这个容器中数据改为了：${newValue}`)
+							clearTimeout(timer)
+							timer = setTimeout(()=>{
+								value = newValue
+								trigger() //通知Vue去重新解析模板
+							},delay)
+						},
+					}
+				})
+			}
+
+			// let keyWord = ref('hello') //使用Vue提供的ref
+			let keyWord = myRef('hello',500) //使用程序员自定义的ref
+			
+			return {keyWord}
+		}
+	}
+</script>
+```
+
+## 162 `privide` 与 `inject`
+- **作用**： 实现 <font color="red">祖与后代组件间 </font>通信
+- **套路**： 父组件有一个 `provide` 选项来提供数据，后代组件有一个 `inject` 选项来开始使用这些数据
+- **具体写法**：
+	- 1 祖组件中：
+
+	```js
+	setup(){
+		//...
+		let car = reactive({name:'奔驰',price:"40w"})
+		provide('car',car)
+		//...
+	}
+	```
+	- 2 孙组件中：
+	```js
+	setup(props,context){
+		//...
+		const car = inject('car')
+		return { car }
+		//...
+	}
+	```
+## 163 6 响应式数据的判断
+
+- `isRef` : 检查一个值是否为一个 `ref` 对象
+
+- `isReactive` : 检查一个对象是否由 `reactive` 创建的相应是代理
+
+- `isReadonly` : 检查一个对象是否由 `isReadonly` 创建的只读代理
+
+- `isProxy` : 检查一个对象是否由 `reactive` 或者 `readonly` 方法创建的代理
+
+```js
+let car = reactive({name:'奔驰',price:'40W'})
+let sum = ref(0)
+let car2 = readonly(car)
+
+console.log(isRef(sum))
+console.log(isReactive(car))
+console.log(isReadonly(car2))
+console.log(isProxy(car))
+console.log(isProxy(sum))
+```
+
+# `Componsition API`  的优势
+
+## `Options API`（ 配置式 API ） 存在的问题
+使用传统`Options API`中，新增或者修改一个需求，就需要分别在`data`，`methods`，`computed`里修改。
+
+## `Componsition API`(组合式 API)  的优势
+我们可以更优雅的组织我们的代码，函数。让相关功能的代码更加有序的组织在一起。
+
+# 新的组件
+## `Eragment`（片段、碎片的意思）
+- **在vue2 中**，：组件必须由一个根标签
+- **在vue3 中**： 组件可以没有根标签，内部会将多个根标签包含在一个`Fragment` 虚拟元素中
+- **好处**：减少标签层级，减小内存占用
+
+## `Teleport` 传送
+什么是 `Teleport` ？ ----`Teleport` 是一种能够将我们的<font color="red">组件html结构</font> 移动到指定位置的技术
+应用： 弹窗组件
+```html
+<teleport to="移动位置">
+	<!-- 遮罩层 -->
+	<div v-if="isshow" class="mask">
+		<!-- 弹窗内容区 -->
+		<div class="dialog">
+			<h3 >我是一个弹窗</h3>
+			<button @click="ishow = false">关闭弹窗</button>
+		</div>
+	</div>
+</teleport>
+```
+```html
+<style>
+	.mask{
+		position: absolute;
+		top: 0;bottom: 0;left: 0;right: 0;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+	.dialog{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		text-align: center;
+		width: 300px;
+		height: 300px;
+		background-color: green;
+	}
+</style>
+```
+## `suspense` 悬念
+- 等待异步组件时，渲染一些额外内容，让应用有更好的用户体验 
+- 使用步骤：
+	- 异步引入组件
+	```js
+	//静态引入
+	//import Child from './components/Child.vue'
+
+	import {defineAsyncComponent} from 'vue'
+
+	//动态引入  或者  异步引入  网速慢的时候区别出来了
+	const Child = defineAsyncComponent( () => import('./components/Child.vue'))
+	```
+	- 使用 `suspense` 包裹组件，并配置好 `default` 和 `fallback`
+
+	```html
+	<Suspense>
+		<template v-slot:default>
+			<Child/>
+		</template>
+		<template v-slot:fallback>
+			<h3>稍等，加载中...</h3>
+		</template>
+	</Suspense>
+	```
+# 其他
+## 1 全局API 的配置
+- vue 2.x 有许多全局API 和配置
+	- 例如： 注册全局组件、注册全局指令等
+
+```js
+//注册全局组件
+Vue.component('MyButton',{
+	data:()=>( {
+		count: 0
+	}),
+	templete:`<button @click="count++"> Clicked {{ count}} teimes. </button>`
+})
+//注册全局指令
+Vue.directive('focus',{
+	insert:el=>el.focus()
+})
+```
+- `Vue 3.0` 中有这些`API` 做出了调整：
+
+	- 将全局的`API`，即： `Vue.xxx` 调整到应用实例 （`app`）上
+
+	| `2.x `全局 `API` (`vue`) | `3.x` 实例 `API`（`app`)|
+	| :-----: |  :-----: |
+	| `Vue.config.xxx` | `app.config.xxxx` |
+	| `Vue.config.productionTip` | <font color="red"> 移除 </font> |
+	| `Vue.component` | `app.component` |
+	| `Vue.directive` | `app.directive` |
+	| `Vue.mixin` | `app.mixin` |
+	| `Vue.use` | `app.use` |
+	| `Vue.prototype` | `app.config.globalProperties` |
+## 2 其他改变
+- `data` 选项应始终被声明为一个函数
+	- 过度类名的更改：
+		- `Vue 2.x` 写法
+		```css
+		.v-enter,v-leave-to {
+			opacity:0;
+		}
+		.v-leave,.v-enter-to {
+			opacity:1;
+		}
+
+		```
+		- `Vue 3.x` 写法
+		```js
+		.v-enter-from,.v-leave-to{
+			opacity:0;
+		}
+		.v-enter-from,.v-leave-to{
+			opacity:1;
+		}
+
+		```
+	- <font color="red"> 移除 </font> `keyCode` 作为 `v-on` 的修饰符，同时也不在支持 `config.keyCodes`
+	- <font color="red"> 移除 </font> `v-on.native` 修饰符
+		父组件中绑定事件
+
+		```html
+		<my-component
+			v-on:close="handleComponentEvent"
+			v-on:click="handleNativeClickEvent"
+		/>
+		```
+
+		子组件中声明自定义事件
+
+		```js
+		<script>
+			export default {
+				emits:['close']
+			}
+		<script/>
+		```
+	- <font color="red"> 移除 </font> 过滤感（`filter`)
+		过滤器虽然看起来很方便，但它需要一个自定义语法，打破大括号内表达式是“只是JavaScript”的假设，这不仅有学习成本，而且有实现的成本！建议用方法调用或计算属性去替换过滤器。
+	- ...
