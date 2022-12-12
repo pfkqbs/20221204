@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>类式组件的三大属性—_state</title>
+	</head>
+	<body>
+		<!-- 必须有容器div -->
+		<div id="test"></div>
+		
+		<script src="./react_js/react.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/babel.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/babel">/*  这里必须是babel  */
+			
+		//创建类式组件(有状态的组件就叫复杂组件) 借助构造器初始化状态，读取state 
+		class Weather extends React.Component {
+		  constructor(props) {
+			super(props)
+			// 初始化状态
+			this.state = {isHot: false,}
+		  }
+		  render() {
+			  // 读取状态
+			const { isHot } = this.state  //解构
+			return (
+			  <div>
+				<div>
+				  <h1>{ isHot ? "天气炎热" : "不热" }</h1>
+				</div>
+			  </div>
+			)
+		  }
+		}
+				
+		//渲染组件到页面
+		ReactDOM.render(<Weather />,document.getElementById('test'))
+
+		</script>
+	</body>
+</html>

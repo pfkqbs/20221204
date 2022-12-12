@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Hello React</title>
+	</head>
+	<body>
+		<!-- 必须有容器div -->
+		<div id="test">
+			
+		</div>
+		
+		<script src="./react_js/react.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/babel.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/babel">/*  这里必须是babel  */
+			// 创建虚拟Dom
+			const vDom = <h1>Hello React!</h1>  /*   此处一定不要写引号 因为不是字符串 */
+			
+			//渲染虚拟Dom
+			ReactDOM.render(vDom,document.getElementById('test'))
+			
+		</script>
+	</body>
+</html>

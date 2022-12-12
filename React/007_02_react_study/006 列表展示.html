@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>列表展示</title>
+		<style type="text/css">
+			.title{
+				background: #035D68;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 必须有容器div -->
+		<div id="test">
+			
+		</div>
+		
+		<script src="./react_js/react.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/babel.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/babel">/*  这里必须是babel  */
+
+			const myData = ["Vue",'React',"Angular"]
+			// const myData2 = [<li>Vue</li>,<li>React</li>,<li>Angular</li>]
+			// const obj = {name1:"Vue",name2:"React",name3:"Angular"} 对象遍历会报错
+		
+			// 使用JSX 创建虚拟Dom
+			// const vDom = (
+			// <div>
+			// 	<ul>
+			// 		{myData2}
+			// 	</ul>
+			// </div>
+			// ) 
+			
+			const vDom = (
+			<div>
+				<ul>
+					{myData.map( (item,index) =>{
+						return <li key={index}>{item}</li>
+					})}
+				</ul>
+			</div>
+			) 
+			
+			//渲染虚拟Dom到页面
+			ReactDOM.render(vDom,document.getElementById('test'))
+			
+			// 严格区分js表达式与js语句（js代码）
+			// js表达式：一个表达式会产生一个值，可以放在任何一个需要值的地方
+			// 表达式有： 变量名，调用一个有返回值的函数，有返回值的表达式，定义一个函数也有返回值
+			// js语句有：for循环，if else，switch case，...
+
+		</script>
+	</body>
+</html>

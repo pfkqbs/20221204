@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>类中的方法中的this</title>
+	</head>
+	<body>
+		<div id="test"></div>
+		
+		<script type="text/jscript">
+		class Person{
+			constructor(name,age){
+				this.name = name;
+				this.age = age;				
+			}
+			speak(){
+				//通过Person实例调用时，speak中的this就是Person对象
+				console.log(this)
+			}
+		}
+		
+		const p1 = new Person('tom',19)
+		p1.speak()  //通过实例调用speak()
+		
+		const x = p1.speak
+		x()   //undefined  ：类中方法局部开启了严格模式，this为undefined
+
+		</script>
+	</body>
+</html>

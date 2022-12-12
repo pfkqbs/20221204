@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>函数式组件</title>
+	</head>
+	<body>
+		<!-- 必须有容器div -->
+		<div id="test"></div>
+		
+		<script src="./react_js/react.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/babel.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/babel">/*  这里必须是babel  */
+			
+			//创建函数式组件，必须有返回值
+			function Demo(){
+				return <h2>我是函数式组件！使用与简单组件的定义！</h2>
+			}
+			
+			//渲染组件到页面
+			ReactDOM.render(<Demo />,document.getElementById('test'))
+			
+			//定义的函数，调用了吗？ React帮你调用了
+			//es6 babel编译后，开启严格模式后，函数里this为undefined
+					
+			
+			// 渲染时函数组件名 名写成标签的形式,<Demo />并且闭合
+			// <Demo /> 首字母必须大写,
+			
+			// 执行了React.render(<>)之后，发生了什么？
+			// 在React解析组件标签，找到了组件
+			// 发现组件是使用函数定义的，随后调用了函数
+
+
+		</script>
+	</body>
+</html>

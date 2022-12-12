@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>类式组件</title>
+	</head>
+	<body>
+		<!-- 必须有容器div -->
+		<div id="test"></div>
+		
+		<script src="./react_js/react.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/babel.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/babel">/*  这里必须是babel  */
+			
+			//创建类式组件
+			class MyComponent extends React.Component{
+				
+				render(){
+					return (
+					 <h2>我是类式组件！适用于复杂组件</h2>
+					 )
+				}
+			}
+			
+			//渲染组件到页面
+			ReactDOM.render(<MyComponent />,document.getElementById('test'))
+			
+			// 执行了React.render(<>)之后，发生了什么？
+			// 在React解析组件标签，找到了组件
+			// 发现组件是使用类定义的，随后new出了该类的实例，并通过该实例调用到原型上的render方法
+			//将rander返回的虚拟Dom转为真实DOM，随后呈现在页面中。
+
+		</script>
+	</body>
+</html>

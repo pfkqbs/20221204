@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>模块与组件</title>
+		<style type="text/css">
+			.title{
+				background: #035D68;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 必须有容器div -->
+		<div id="test">
+			
+		</div>
+		
+		<script src="./react_js/react.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/babel.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/babel">/*  这里必须是babel  */
+		
+			const myData = ["Vue",'React',"Angular"]
+			
+			const vDom = (
+			<div>
+				<ul>
+					{myData.map( (item,index) =>{
+						return <li key={index}>{item}</li>
+					})}
+				</ul>
+			</div>
+			) 
+			
+			//渲染虚拟Dom到页面
+			ReactDOM.render(vDom,document.getElementById('test'))
+
+
+		</script>
+	</body>
+</html>

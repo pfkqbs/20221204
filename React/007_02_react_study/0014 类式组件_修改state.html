@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>类式组件修改state</title>
+	</head>
+	<body>
+		<!-- 必须有容器div -->
+		<div id="test"></div>
+
+		<script src="./react_js/react.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/babel.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/babel">/*  这里必须是babel  */
+			
+		//创建类式组件(有状态的组件就叫复杂组件) 借助构造器初始化状态，读取state 
+		class Weather extends React.Component {
+		  constructor(props) {
+			super(props)
+			this.state = {isHot: true,}			
+			this.demo = this.clickFun.bind(this)//解决this指向问题			
+		  }
+		  
+		  render() {
+			const { isHot } = this.state  //解构
+			return (
+			  <div>
+				<div>
+				  <h1 onClick={this.demo}>{ isHot ? "天气炎热" : "不热" }</h1>
+				</div>
+			  </div>
+			)
+		  }
+		  clickFun(){
+			//类中的方法默认开启了 局部严格模式，这里this就是undefined
+		  	console.log("this",this)
+			const isHot = this.state.isHot			
+			// this.state.isHot = !isHot   //错误写法，不能直接更改，			
+			this.setState({isHot: !isHot,})  //使用setState进行修改
+		  }		  
+		}				
+		//渲染组件到页面
+		ReactDOM.render(<Weather />,document.getElementById('test'))
+		
+		// 构造器调用几次？ 1次 初始化
+		// render调用几次？ 1+n次，1为初始化时执行，n为状态更新的次数。
+		// 方法调用几次？ 点几次调几次
+
+		</script>
+	</body>
+</html>

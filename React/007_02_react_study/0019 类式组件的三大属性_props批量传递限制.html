@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="app"></div>
+		<script src="./react_js/react.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./react_js/babel.min.js" type="text/javascript" charset="utf-8"></script>
+		<!-- 进行类型检查 -->
+		<script src="./react_js/prop-types.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/babel">
+
+			//需求： 自定义用来显示一个人员信息的组件（信息由外部传入组件内部）
+			//姓名必须制定
+			//如果性别没有指定 默认为男
+			//如果年龄没有指定 默认18 
+
+			class Person extends React.Component {
+			  render() {
+				// 外部传过来的 我们通过  this.props  来获取
+				// console.log(this.props);
+				const { name, sex, age } = this.props
+				// this.props.name = '张飞'
+				return (
+				  <div>
+					<h1>姓名:{name}</h1>
+					<h1>性别:{sex}</h1>
+					<h1>年龄:{age}</h1>
+				  </div>
+				)
+			  }
+			}
+			// 外部数据
+			let person = { name: '关羽',age:18,sex:"男",speak:function(){console.log("speak方法")} }
+			Person.propTypes = {
+			  name: PropTypes.string.isRequired,  //限制name为字符串，必传
+			  age:PropTypes.number,//限制name为数值
+			  sex:PropTypes.string,//限制name为字符串
+			  speak:PropTypes.func//限制name为函数
+			}
+			Person.defaultProps = {
+			  sex: '男',//sex默认值为男
+			  age: 1000//age默认值为1000
+			}
+			ReactDOM.render(
+			<Person name={person.name} sex={person.sex}  age={person.age} speak={person.speak}/>, 
+			document.getElementById("app"))
+
+  </script>
+	</body>
+</html>
