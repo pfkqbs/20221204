@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="string1">
+
+    </p>
+    <p id="string2">
+
+    </p>
+    <p id="string3">
+
+    </p>
+    <script>
+        //one
+        var testHtml="a"+
+        "b"+
+        "c";
+
+        //two
+        var testHtml2="a\
+        b\
+        c";
+
+        //three
+        var testHtml3=["a",
+        "b",
+        "c"].join("");
+
+        let pDom1 = document.getElementById('string1')
+        pDom1.innerHTML=testHtml
+        let pDom2 = document.getElementById('string2')
+        pDom2.innerHTML=testHtml2
+        let pDom3 = document.getElementById('string3')
+        pDom3.innerHTML=testHtml3
+        console.log("testHtml",testHtml);
+        console.log("testHtml2",testHtml2);
+        console.log("testHtml3",testHtml3);
+    </script>
+</body>
+</html>
