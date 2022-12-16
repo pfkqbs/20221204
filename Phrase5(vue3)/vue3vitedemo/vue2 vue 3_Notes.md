@@ -2025,26 +2025,57 @@ module.exports = {
    2. 兼容性和hash模式相比略差。
    3. 应用部署上线时需要后端人员支持，解决刷新页面服务端404的问题。
 
-    
+  
+## 1.`Vue3`简介  
+- 2020年9月18日，`Vue.js`发布3.0版本，代号：`One Piece`（海贼王）
+- 耗时2年多、[2600+次提交](https://github.com/vuejs/vue-next/graphs/commit-activity)、[30+个RFC](https://github.com/vuejs/rfcs/tree/master/active-rfcs)、[600+次PR](https://github.com/vuejs/vue-next/pulls?q=is%3Apr+is%3Amerged+-author%3Aapp%2Fdependabot-preview+)、[99位贡献者](https://github.com/vuejs/vue-next/graphs/contributors) 
+- `github`上的`tags`地址：https://github.com/vuejs/vue-next/releases/tag/v3.0.0
+- `tags`就是里程碑的意思
 
-## 136 `Vue3` 带来了什么？
-    （2600+次提交，30+RFC（请求意见稿），600+次PR）
-    **Vue3github**:https://github.com/vuejs/vue-next/releases/tag/v3.0.0
+## 2.Vue3带来了什么
 
-- 性能提升
-- 源码的升级:
-    使用 `Proxy` 代替 `defineProperty` 实现响应式
-    重写虚拟 `Dom` 和使用`Tree-shaking`去除没有使用的代码
-- 拥抱 `TypeScript`
-- 新的特性：
-    组合式`API`
-    - `setup`配置
-    - `ref`和`reactive`
-    - `watch`与`watchEffect`
+### 1.性能的提升
 
-    新的内置组件：
-    - 
-    其他的改变：
+- 打包大小减少41%
+
+- 初次渲染快55%, 更新渲染快133%
+
+- 内存减少54%
+
+  ......
+
+### 2.源码的升级
+
+- 使用Proxy代替defineProperty实现响应式
+
+- 重写虚拟DOM的实现和Tree-Shaking（术语表）
+
+  ......
+
+### 3.拥抱`TypeScript`
+
+- Vue3可以更好的支持TypeScript
+
+### 4.新的特性
+
+1. Composition API（组合API）
+
+   - setup配置
+   - ref与reactive
+   - watch与watchEffect
+   - provide与inject
+   - ......
+2. 新的内置组件
+   - Fragment 
+   - Teleport
+   - Suspense
+3. 其他改变
+
+   - 新的生命周期钩子
+   - data 选项应始终被声明为一个函数
+   - 移除keyCode支持作为 v-on 的修饰符
+   - ......
+
 
 ## 创建一个`vue3`的项目工程
 ### 137、使用  `vue/cli`  创建
@@ -2067,8 +2098,8 @@ npm run serve
 ```
 ### 138、使用 `vite` 创建
 
-vite官网：https://vitejs.cn
-- 什么事vite?  新一代前段构建工具
+`vite`官网：https://vitejs.cn
+- 什么事`vite`?  新一代前段构建工具
 - 优势如下：
     - 开发环境中，无需打包操作，可快速地冷启动
     - 轻量快速地热重载（HMR）
@@ -2076,9 +2107,9 @@ vite官网：https://vitejs.cn
     - 丰富的功能
     - 优化的构建
 
-- 传统构建webpack 和 vite 的构建对比图
-    - wepack：是一个入口，根据路由，分析，都准备好。
-    - Vite：是根据你进来的网页 查看入口，再准备好了。
+- 传统构建`webpack` 和 `vite `的构建对比图
+    - `wepack`：是一个入口，根据路由，分析，都准备好。
+    - `Vite`：是根据你进来的网页 查看入口，再准备好了。
 
 ```shell
 ## 创建工程
