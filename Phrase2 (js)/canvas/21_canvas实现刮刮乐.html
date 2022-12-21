@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            border: 1px solid #000;
+            width: 250px;
+            height: 60px;
+            font-size: 40px;
+            line-height: 60px;
+            text-align: center;
+            position: relative;
+            user-select: none;
+        }
+        
+        canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        特等奖
+        <canvas width="250" height="60"></canvas>
+    </div>
+    <script>
+        var canvas = document.querySelector("canvas");
+        var ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "#333";
+        ctx.fillRect(0, 0, 250, 60);
+        // 设置新画上的元素，实际上就是擦除之前的元素
+        ctx.globalCompositeOperation = "destination-out";
+
+        // 鼠标按下
+        canvas.onmousedown = function() {
+            // 拖动
+            canvas.onmousemove = function(event) {
+                // 画圆
+                ctx.beginPath();
+                ctx.arc(event.offsetX, event.offsetY, 10, 0, 7, false);
+                ctx.fill()
+            }
+        }
+    </script>
+</body>
+
+</html>

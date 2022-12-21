@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="600" height="400"></canvas>
+    <script>
+        // 游戏类
+        function Game() {
+            this.dom = document.querySelector("canvas");
+            this.ctx = this.dom.getContext("2d");
+
+            // 添加属性，保存需要的图片地址
+            this.R = {
+                "gugong": "./images/0.jpg",
+                "niaochao": "./images/1.jpg",
+                "yiheyuan": "./images/2.jpg",
+                "tiantan": "./images/3.jpg",
+                "guojiadajuyuan": "./images/4.jpg"
+            };
+            // 获取资源图片的总数
+            var allAmount = Object.keys(this.R).length;
+            // 计数器，记录的是加载完毕的数量
+            var count = 0;
+            // 遍历R对象获取每一个路径地址
+            for (k in this.R) {
+                // 备份每一张图片的地址
+                var src = this.R[k];
+                // 创建一个图片
+                this.R[k] = new Image();
+                // 赋值src图片地址
+                this.R[k].src = src;
+                // 判断图片是否加载完成，如果完成了，计数，如果加载完毕的数量和总数量相同了，则说明资源加载完毕，开始游戏
+                // 备份上下文
+                var self = this;
+                this.R[k].onload = function() {
+                    // 增加计数器
+                    count++;
+                    // 清屏
+                    self.ctx.clearRect(0, 0, 600, 400);
+                    self.ctx.font = "16px Arial";
+                    // 设置资源加载文案
+                    self.ctx.fillText("图片已经加载:" + count + "/" + allAmount, 10, 50)
+                        // 判断图片是否加载完毕，如果加载完毕了，开始游戏
+                    if (count == allAmount) {
+                        self.start();
+                    }
+                }
+            }
+        };
+        Game.prototype.start = function() {
+            var self = this;
+            this.ctx.drawImage(this.R["gugong"], 200, 200, 100, 80)
+        }
+        console.log(new Game)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="1200" height="500"></canvas>
+    <script>
+        var canvas = document.querySelector("canvas");
+        var ctx = canvas.getContext("2d");
+
+        var image = new Image();
+        image.src = "images/lunzi.png";
+        image.onload = function() {
+            // 定时器
+            // 旋转的度数
+            var deg = 0;
+            // 位置
+            var x = 200;
+            setInterval(function() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                deg += 0.01;
+                x++;
+                // 备份
+                ctx.save();
+                // 平移
+                ctx.translate(x, 200);
+                // 旋转
+                ctx.rotate(deg);
+                ctx.drawImage(image, -374 / 2, -374 / 2);
+                // 恢复
+                ctx.restore();
+            }, 10)
+        }
+    </script>
+</body>
+
+</html>

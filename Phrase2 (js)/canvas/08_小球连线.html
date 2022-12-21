@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        canvas {
+            display: block;
+            border: 1px solid #ccc;
+            margin: 5px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id='mycanvas'></canvas>
+    <script>
+        var canvas = document.getElementById("mycanvas");
+        var ctx = canvas.getContext("2d");
+        // 画布的尺寸
+        canvas.width = document.documentElement.clientWidth - 30;
+        canvas.height = document.documentElement.clientHeight - 30;
+
+        function Ball() {
+
+            this.x = parseInt(Math.random() * canvas.width);
+            this.y = parseInt(Math.random() * canvas.height);
+            this.r = 10;
+            this.color = "gray";
+            // 设置行进方向
+            this.dx = parseInt(Math.random() * 10) - 5;
+            // 设置行进方向
+            this.dy = parseInt(Math.random() * 10) - 5;
+
+            ballArr.push(this);
+            // 自己在数组中的位置记录一下
+            this.index = ballArr.length - 1;
+        }
+        // 小球的更新
+        Ball.prototype.update = function() {
+            this.x += this.dx;
+            this.y += this.dy;
+            // 当小球出屏幕了，反弹，判断小于this.r是为了判断当前是否出屏幕
+            if (this.x < this.r || this.x > canvas.width - this.r) {
+                this.dx = -this.dx;
+            }
+            if (this.y < this.r || this.y > canvas.height - this.r) {
+                this.dy = -this.dy;
+            }
+        };
+        // 小球的渲染
+        Ball.prototype.render = function() {
+            ctx.beginPath();
+            // 透明度
+            ctx.globalAlpha = 1;
+            // 画小球
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+
+            // 画线的逻辑
+            // 画线只画比自己大的一方就可以了，否则就是每一次两根线
+            for (var i = this.index; i < ballArr.length; i++) {
+                if (Math.abs(ballArr[i].x - this.x) < 150 && Math.abs(ballArr[i].y - this.y) < 150) {
+                    ctx.strokeStyle = "#000";
+                    ctx.beginPath();
+                    // 线的透明度，根据当前的两个已经连线的小球的距离进行线的透明度设置
+                    ctx.globalAlpha = 10 / Math.sqrt(Math.pow(ballArr[i].x - this.x, 2) + Math.pow(ballArr[i].y - this.y, 2))
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(ballArr[i].x, ballArr[i].y);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            }
+        };
+        var ballArr = [];
+        // 创建20个小球
+        for (var i = 0; i < 20; i++) {
+            new Ball();
+        };
+        // 定时器动画
+        setInterval(function() {
+            // 清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < ballArr.length; i++) {
+                ballArr[i].update();
+                ballArr[i].render();
+            }
+        }, 20)
+    </script>
+</body>
+
+</html>
