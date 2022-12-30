@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas绘制矩形</title>
+	</head>
+	<body>
+		<pre>
+			使用 fillRect() 填充矩形
+			fillRect() 和 strokeRect() 方法差不多，但 fillRect() 的作用是填充。
+			
+			需要注意的是，fillStyle 必须写在 fillRect() 之前，不然样式不生效。
+		</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+
+			// fillStyle 属性
+			// fillRect(x, y, width, height) 方法
+			cxt.fillStyle = 'pink'
+			cxt.fillRect(50, 50, 200, 100) // fillRect(x, y, width, height)
+		</script>
+	</body>
+</html>

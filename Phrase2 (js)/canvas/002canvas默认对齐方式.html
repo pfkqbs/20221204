@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas多条线段</title>
+	</head>
+	<body>
+		<pre>
+			仔细观察一下，为什么两条线的粗细不一样的？
+			
+			明明使用的方法都是一样的，只是第二条直线的 Y轴 的值是有小数点。
+			
+			答：默认情况下 canvas 会将线条的中心点和像素的底部对齐，所以会导致显示效果是 2px 和非纯黑色问题。
+			线的中心点会和画布像素点的底部对齐，所以会线中间是黑色的，但由于一个像素就不能再切割了，所以会有半个像素被染色，就变成了浅灰色。			
+			所以如果你设置的 Y轴 值是一个整数，就会出现上面那种情况。
+		</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+			cxt.moveTo(20, 100)
+			cxt.lineTo(200, 100)
+			cxt.stroke()
+
+			cxt.moveTo(20, 120.5)
+			cxt.lineTo(200, 120.5)
+			cxt.stroke()
+		</script>
+	</body>
+</html>

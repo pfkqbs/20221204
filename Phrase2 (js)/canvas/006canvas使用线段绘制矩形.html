@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas绘制矩形</title>
+	</head>
+	<body>
+		<pre>
+			
+			方法1：根据前面的基础，我们可以 使用线段来描绘矩形，
+			但 canvas 也提供了 rect() 等方法可以直接生成矩形。
+			
+			方法2：使用 strokeRect() 描边矩形
+			strokeStyle：设置描边的属性（颜色、渐变、图案）
+			strokeRect(x, y, width, height)：描边矩形（x和y是矩形左上角起点；width 和 height 是矩形的宽高）
+			strokeStyle 必须写在 strokeRect() 前面，不然样式不生效。
+		</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+
+			// 使用线段 绘制矩形
+			cxt.moveTo(50, 50)
+			 cxt.lineTo(200, 50)
+			 cxt.lineTo(200, 120)
+			 cxt.lineTo(50, 120)
+			 cxt.lineTo(50, 50) // 需要闭合，又或者使用 closePath() 方法进行闭合，推荐使用 closePath()
+			 cxt.stroke()
+		</script>
+	</body>
+</html>

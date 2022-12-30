@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas绘制菱形</title>
+	</head>
+	<body>
+		<pre>
+有一组邻边相等的平行四边形是菱形
+
+要绘制直线类型的图形，
+在草稿纸上标记出起始点和每个拐角的点，
+然后再连线即可。相对曲线图形来说，直线图形是比较容易的。
+
+</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+
+			cxt.moveTo(150, 50)
+			cxt.lineTo(250, 100)
+			cxt.lineTo(150, 150)
+			cxt.lineTo(50, 100)
+			// 手动闭合
+			cxt.closePath()
+			cxt.lineJoin = 'round' // 线条连接的样式。miter: 默认; bevel: 斜面; round: 圆角
+			cxt.lineWidth = 20
+			cxt.stroke()
+		</script>
+	</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="cav" width="800" height="600"></canvas>
+		
+		<script>
+			var canvas = document.getElementById("cav");
+			var  cav = canvas.getContext("2d");
+			var deg = Math.PI / 180 ;
+			cav.beginPath();
+			cav.fillStyle = "#000";
+			cav.arc(300,300,200,deg * 270 , deg * 90,false);
+			cav.arc(300,400,100,deg * 90 , deg * 270, false);
+			cav.arc(300,200,100,deg * 90 , deg * 270, true);
+			cav.fill();
+			cav.stroke();
+			cav.closePath();
+			
+			cav.beginPath();
+			cav.arc(300,300,200,deg * 270 , deg * 90,true);
+			cav.stroke();
+			cav.closePath();
+			
+			cav.beginPath();
+			cav.moveTo(320,200);
+			cav.arc(300,200,20,0,deg * 360);
+			cav.stroke();
+			cav.fill();
+			cav.closePath();
+			
+			cav.beginPath();
+			cav.moveTo(420,200);
+			cav.arc(300,400,20,0,deg * 360);
+			cav.stroke();
+			cav.fillStyle = "#fff"
+			cav.fill();
+			cav.closePath();
+		</script>
+	</body>
+</html>

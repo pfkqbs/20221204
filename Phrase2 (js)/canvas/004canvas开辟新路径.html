@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas折线</title>
+	</head>
+	<body>
+		<pre>
+			和 直线 差不多，都是使用 moveTo() 、lineTo() 和 stroke() 方法可以绘制折线。
+			画这种折线，最好在草稿纸上画一个坐标系，自己计算并描绘一下每个点大概在什么什么位置，最后在 canvas 中看看效果。
+		</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+
+			// 绘制折线
+			cxt.moveTo(50, 200)
+			cxt.lineTo(100, 50)
+			cxt.lineTo(200, 200)
+			cxt.lineTo(250, 50)
+
+			cxt.lineWidth = 10
+			cxt.strokeStyle = '#ccc'
+			cxt.stroke()
+		</script>
+	</body>
+</html>

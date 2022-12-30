@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>手写签名</title>
+	</head>
+	<body>
+		<canvas id="c" width="800" height="600"></canvas>
+		<script type="text/javascript">
+			let ctx = c.getContext('2d')
+			ctx.strokeStyle = 'black'
+			ctx.lineWidth = 4
+			let isTouch = false
+			c.onmousedown = function(e) {
+				let x = e.layerX
+				let y = e.layerY
+				isTouch = true
+				console.log(x, y)
+				ctx.beginPath()
+				ctx.moveTo(x, y)
+			}
+			c.onmousemove = function(e) {
+				let x = e.layerX
+				let y = e.layerY
+				if (isTouch) {
+					ctx.lineTo(x, y)
+					ctx.stroke()
+				}
+			}
+			c.onmouseup = function(e) {
+				let x = e.layerX
+				let y = e.layerY
+				isTouch = false
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas绘制弧线</title>
+	</head>
+	<body>
+		<pre>
+1、描边 stroke()
+
+2、线条宽度 lineWidth 
+	lineWidth 默认值是 1 ，默认单位是 px。
+	语法： lineWidth = 线宽
+	
+3、线条颜色 strokeStyle
+	语法：strokeStyle = 颜色值
+	
+4、线帽 lineCap
+	语法： lineCap = '属性值'
+	属性值：
+		butt: 默认值，无线帽
+		square: 方形线帽
+		round: 圆形线帽
+		
+	使用 square 和 round 的话，会使线条变得稍微长一点点，这是给线条增加线帽的部分，这个长度在日常开发中需要注意。	
+	线帽只对线条的开始和结尾处产生作用，对拐角不会产生任何作用。
+	
+5、拐角样式 lineJoin
+	语法：lineJoin = '属性值'	
+	属性值包括：	
+		miter: 默认值，尖角
+		round: 圆角
+		bevel: 斜角
+
+6.虚线 setLineDash()
+	使用 setLineDash() 方法可以将描边设置成虚线。
+	语法： setLineDash([])
+	
+	需要传入一个数组，且元素是数值型。	
+	虚线分3种情况	
+		只传1个值
+		有2个值
+		有3个以上的值
+		
+7、设置填充颜色
+	语法：fillStyle = 'pink'
+	
+8、非零环绕填充
+
+	在使用 fill() 方法填充时，需要注意一个规则：非零环绕填充。
+	
+	在使用 moveTo 和 lineTo 描述图形时，如果是按顺时针绘制，计数器会加1；如果是逆时针，计数器会减1。
+	
+	当图形所处的位置，计数器的结果为0时，它就不会被填充。
+	
+	
+</pre>
+		<canvas id="c" width="300" height="300" style="border:1px solid #035D68"></canvas>
+		<canvas id="c2" width="300" height="300" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");			
+			const cxt = cnv.getContext('2d');
+			cxt.beginPath()
+			cxt.arc(120, 120, 80, 0, 45 * Math.PI / 180,)//绘制45度的弧线
+			cxt.stroke()
+			
+			const cnv2 = document.getElementById("c2");
+			const cxt2 = cnv2.getContext('2d');
+			cxt2.moveTo(40, 40)
+			cxt2.arcTo(120, 40, 120, 120, 80)
+			cxt2.stroke()
+			
+			
+		</script>
+	</body>
+</html>

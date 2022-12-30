@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas绘制矩形</title>
+	</head>
+	<body>
+		<pre>
+			同时使用 strokeRect() 和 fillRect()
+			同时使用 strokeRect() 和 fillRect() 会产生描边和填充的效果
+		</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+
+			// fillStyle 属性
+			// fillRect(x, y, width, height) 方法
+			cxt.strokeStyle = 'yellowgreen'
+			cxt.strokeRect(50,50,200,100)
+			
+			cxt.fillStyle = 'red'
+			cxt.fillRect(40, 40, 190, 90) // fillRect(x, y, width, height)
+		</script>
+	</body>
+</html>

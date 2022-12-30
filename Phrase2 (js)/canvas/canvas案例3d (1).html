@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<style type="text/css">
+			#c{
+				width: 100vw;
+				height: 100vh;
+				position: absolute;
+				left: 0;
+				top: 0;
+				background-color: black;
+			}
+			#f{
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 100;
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<form id="f" action="">
+			x坐标：<input id="x" type="range" min="-1000" max="1000" step="1" value="0"> 
+			<span id="xv">0</span>
+			<br>
+			y坐标：<input id="y" type="range" min="-1000" max="1000" step="1" value="0">
+			<span id="yv">0</span><br>
+			z坐标：<input id="z" type="range" min="-1000" max="1000" step="1" value="0"> 
+			<span id="zv">0</span><br>
+			焦点距离：<input id="viewLength" type="range" min="1" max="30000" step="1" value="1000"> 
+			<span id="viewLengthv">1000</span><br>
+			物体宽度：<input id="w" type="range" min="0" max="1000" step="1" value="100"> 
+			<span id="wv">100</span><br>
+			物体高度：<input id="h" type="range" min="0" max="1000" step="1" value="100"> 
+			<span id="hv">100</span><br>
+			物体深度：<input id="d" type="range" min="0" max="1000" step="1" value="100">
+			<span id="dv">100</span><br>
+		</form>
+		<canvas id="c" width="1280" height="800"></canvas>
+		<script type="text/javascript">
+			function fillRect(x,y,z,width,height){
+				let realWidth = (this.viewLength-z)/this.viewLength*width
+				let realHeight = (this.viewLength-z)/this.viewLength*height
+				let {realTargetX,realTargetY} = this.computeRealXandRealY(x,y,z)
+				console.log(realTargetX,realTargetY,realWidth,realHeight)
+				this.ctx.fillRect(realTargetX,realTargetY,realWidth,realHeight)
+				
+			}
+			function computeRealXandRealY(x,y,z){
+				let baseX = this.width/2
+				let baseY = this.height/2
+				let realX = baseX+x
+				let realY = baseY+y
+				let realW = Math.abs(realX-baseX)/this.viewLength*(this.viewLength-z)
+				let realTargetX = x<0?baseX-realW:baseX+realW
+				let realH = Math.abs(realY-baseY)/this.viewLength*(this.viewLength-z)
+				let realTargetY = y<0?baseY-realH:baseY+realH
+				return {realTargetX,realTargetY}
+			}
+			function lineTo(x,y,z){
+				let {realTargetX,realTargetY} = this.computeRealXandRealY(x,y,z)
+				this.ctx.lineTo(realTargetX,realTargetY)
+			}
+			function moveTo(x,y,z){
+				let {realTargetX,realTargetY} = this.computeRealXandRealY(x,y,z)
+				this.ctx.moveTo(realTargetX,realTargetY)
+			}
+			function stroke3DRect(x,y,z,width,height,deep){
+				let point1 = {x:x-(width/2),y:y-(height/2),z:z-(deep/2)}
+				let point2 = {x:x+(width/2),y:y-(height/2),z:z-(deep/2)}
+				let point3 = {x:x+(width/2),y:y+(height/2),z:z-(deep/2)}
+				let point4 = {x:x-(width/2),y:y+(height/2),z:z-(deep/2)}
+				let point5 = {x:x-(width/2),y:y-(height/2),z:z+(deep/2)}
+				let point6 = {x:x+(width/2),y:y-(height/2),z:z+(deep/2)}
+				let point7 = {x:x+(width/2),y:y+(height/2),z:z+(deep/2)}
+				let point8 = {x:x-(width/2),y:y+(height/2),z:z+(deep/2)}
+				let pointArr = [point1,point2,point3,point4,point5,point6,point7,point8]
+				// console.log(pointArr)
+				for(let i = 0;i <= 4;i+=4 ){
+					this.ctx.beginPath()
+					this.moveTo(pointArr[0+i].x,pointArr[0+i].y,pointArr[0+i].z)
+					this.lineTo(pointArr[1+i].x,pointArr[1+i].y,pointArr[1+i].z)
+					this.lineTo(pointArr[2+i].x,pointArr[2+i].y,pointArr[2+i].z)
+					this.lineTo(pointArr[3+i].x,pointArr[3+i].y,pointArr[3+i].z)
+					this.ctx.closePath()
+					this.ctx.stroke()
+				}
+				for(let i = 0;i < 4; i++){
+					this.ctx.beginPath()
+					this.moveTo(pointArr[i].x,pointArr[i].y,pointArr[i].z)
+					this.lineTo(pointArr[i+4].x,pointArr[i+4].y,pointArr[i+4].z)
+					this.ctx.stroke()
+					// console.log(i)
+				}
+				
+			}
+			function initScene(el,{width,height,viewLength}){
+				el.width = width|1280
+				el.height = height|800
+				let ctx = c.getContext('2d')
+				return {
+					width,
+					height,
+					viewLength,
+					ctx,
+					el,
+					fillRect,
+					lineTo,
+					moveTo,
+					computeRealXandRealY,
+					stroke3DRect
+				}
+			}
+			let scene = initScene(document.querySelector('#c'),{
+				width:1480,
+				height:900,
+				viewLength:1000
+			})
+			console.log(scene)
+			scene.ctx.strokeStyle = 'red'
+			let gx = 0
+			let gy = 0
+			let gz = 0
+			let gw = 100
+			let gh = 100
+			let gd = 100
+			function loop(){
+				scene.ctx.clearRect(0,0,scene.width,scene.height)
+				scene.stroke3DRect(gx,gy,gz,gw,gh,gd)
+			
+				// z++
+				requestAnimationFrame(loop)
+			}
+			loop()
+			x.oninput = function(e){
+				let v = Number(e.target.value)
+				// console.log(v)
+				gx = v
+				xv.innerHTML = v
+			}
+			y.oninput = function(e){
+				let v = Number(e.target.value)
+				// console.log(v)
+				gy = v
+				yv.innerHTML = v
+			}
+			z.oninput = function(e){
+				let v = Number(e.target.value)
+				// console.log(v)
+				gz = v
+				zv.innerHTML = v
+			}
+			w.oninput = function(e){
+				let v = Number(e.target.value)
+				// console.log(v)
+				gw = v
+				wv.innerHTML = v
+			}
+			h.oninput = function(e){
+				let v = Number(e.target.value)
+				// console.log(v)
+				gh = v
+				hv.innerHTML = v
+			}
+			d.oninput = function(e){
+				let v = Number(e.target.value)
+				// console.log(v)
+				gz = v
+				dv.innerHTML = v
+			}
+			viewLength.oninput = function(e){
+				let v = Number(e.target.value)
+				console.log(v)
+				scene.viewLength = v
+				viewLengthv.innerHTML = v
+			}
+			let mx = 0
+			let my = 0
+			let isTouch = false
+			c.onmousedown = function(e){
+				let x = e.layerX
+				let y = e.layerY
+				
+				let cx = x-mx-(scene.width/2)
+				let cy = y-my-(scene.height/2)
+				gx = cx
+				gy = cy
+				isTouch = true
+			}
+			c.onmousemove = function(e){
+				let x = e.layerX
+				let y = e.layerY
+				
+				if(isTouch){
+					// console.log(x,y)
+					let cx = x-mx-(scene.width/2)
+					let cy = y-my-(scene.height/2)
+					gx = cx
+					gy = cy
+					console.log(cx,cy)
+					scene.ctx.clearRect(0,0,1280,800)
+					scene.stroke3DRect(gx,gy,gz,gw,gh,gd)
+					
+				}
+			}
+			c.onmouseup = function(){
+				isTouch = false
+				mx = gx
+				my = gy
+			}
+		</script>
+	</body>
+</html>

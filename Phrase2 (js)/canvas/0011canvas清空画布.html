@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas清空画布</title>
+	</head>
+	<body>
+		<pre>
+			canvas 画布元素是矩形，所以可以通过下面的代码把整个画布清空掉。
+			cxt.clearRect(0,0，cnv.width,cnv.height)
+			要清空的区域：从画布左上角开始，直到画布的宽和画布的高为止。
+		</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+			
+			cxt.fillStyle = 'red'
+			cxt.fillRect(40, 40, 190, 90) // fillRect(x, y, width, height)
+			// cxt.clearRect(0,0，cnv.width,cnv.height)
+		</script>
+	</body>
+</html>

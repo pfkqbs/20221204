@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			canvas{
+				display: block;
+				margin: 50px  auto;
+				background: #ccc;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="cav" width="600" height="600"></canvas>
+		
+		<script>
+			var canvas = document.getElementById("cav");
+			var cav = canvas.getContext("2d");	
+					// 创建图片对象
+			var image = new Image();
+			image.src = "./img/风景.jpg"; //为图片对象添加src路径
+			image.onload = function(){ //当图片加载完毕后，再执行的内容
+				clock();
+			  setInterval(clock,1000);
+			}
+		
+			function clock(){
+				cav.clearRect(0,0,600,600);			
+				var  time = new Date()
+				var s = time.getSeconds();
+				var m = time.getMinutes();
+				var h = time.getHours();
+				h = h >= 12 ? h - 12 : h;
+				
+				var a = cav.createLinearGradient(200,50,400,50);
+				a.addColorStop(0,"red");
+				a.addColorStop(0.25,"yellow");
+				a.addColorStop(0.5,"green");
+				a.addColorStop(0.75,"blue");
+				a.addColorStop(1,"hotpink");
+				
+				cav.beginPath();
+				cav.font = "50px 微软雅黑";
+				cav.strokeStyle = a;
+				cav.fillStyle = a;
+				cav.fillText("风景时钟",200,50);
+				cav.strokeText("风景时钟",200,50);
+				// cav.fill()
+				cav.closePath();
+				
+				// 绘制表盘
+				cav.beginPath();
+				cav.strokeStyle = "#ccc"
+				cav.arc(300,300,200,0,Math.PI*2);
+				cav.stroke();
+				cav.clip();
+				cav.drawImage(image,100,100,400,400); //在画布中添加图片
+				cav.closePath();
+				
+				cav.translate(300,300);
+				cav.save();
+				// 绘制秒刻度
+				for(var i = 0 ; i < 60 ; i++){
+					cav.beginPath();
+					cav.moveTo(0,-200);
+					cav.lineTo(0,-190);
+					cav.lineWidth = 3 ;
+					cav.stroke();
+					cav.closePath();
+					cav.rotate(Math.PI / 180 * 6)
+				}
+				cav.restore();
+				cav.save();
+				// 绘制分刻度
+				for(var i = 0 ; i < 12 ; i++){
+					cav.beginPath();
+					cav.moveTo(0,-200);
+					cav.lineTo(0,-180);
+					cav.lineWidth = 5 ;
+					cav.stroke();
+					cav.closePath();
+					cav.rotate(Math.PI / 180 * 30)
+				}
+				cav.restore();		
+				cav.save();
+							
+				// 绘制秒针
+				
+				cav.beginPath();
+				cav.rotate(Math.PI / 180 * 6 * s);
+				cav.moveTo(0,0);
+				cav.lineTo(0,-170);
+				cav.lineTo(-5,-160);
+				cav.lineTo(5,-160);
+				cav.lineTo(0,-170);
+				cav.strokeStyle = "#00FFFF";
+				cav.fillStyle = "#00ffff"
+				cav.lineWidth = 3;
+				cav.stroke();
+				cav.fill()
+				cav.closePath();
+				
+				cav.restore();
+				cav.save();
+				
+				// 绘制分针
+				cav.beginPath();
+				cav.rotate(Math.PI / 180 * 6 * m)
+				cav.moveTo(0,0);
+				cav.lineTo(0,-110);
+				cav.lineTo(-5,-100);
+				cav.lineTo(5,-100);
+				cav.lineTo(0,-110);
+				cav.strokeStyle = "#0000FF";
+				cav.fillStyle = "#00f"
+				cav.lineWidth = 5;
+				cav.stroke();
+				cav.fill();
+				cav.closePath();
+				
+				cav.restore();
+				cav.save();
+				
+				// 绘制时针		
+				cav.beginPath();
+				cav.rotate(Math.PI / 180 * 30 * h + Math.PI / 180 * 6 * m / 360 * 30 )
+				cav.moveTo(0,0);
+				cav.lineTo(0,-80);
+				cav.strokeStyle = "red";
+				cav.lineWidth = 7 ;
+				cav.stroke();
+				cav.closePath();	
+				cav.restore();
+				
+				// 绘制表芯
+				cav.beginPath();
+				cav.arc(0,0,10,0,Math.PI * 2);
+				cav.fill()
+				cav.closePath();
+				cav.translate(-300,-300);
+			}
+			
+			
+		</script>
+		
+	</body>
+</html>

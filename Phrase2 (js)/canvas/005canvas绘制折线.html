@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas多条线段</title>
+	</head>
+	<body>
+		<pre>
+			开辟新路径的方法：			
+			beginPath()
+			在绘制多条线段的同时，还要设置线段样式，通常需要开辟新路径。
+			
+			如果不想相互污染，需要做2件事：			
+			使用 beginPath() 方法，重新开一个路径
+			设置新线段的样式（必须项）
+		</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+
+			// 绘制第一条 直线
+			cxt.moveTo(200, 20)
+			cxt.lineTo(200, 100)
+
+			// 修改直线的宽度
+			cxt.lineWidth = 20
+
+			// 修改直线的颜色
+			cxt.strokeStyle = '#00FF00'
+
+			// 修改直线两端样式
+			cxt.lineCap = 'round' // 默认: butt; 圆形: round; 方形: square
+			cxt.stroke()
+
+			// 绘制第二条直线  线条样式污染
+			cxt.beginPath() // 重新开启一个路径
+			cxt.moveTo(20, 125)
+			cxt.lineTo(200, 125)
+			cxt.lineWidth = 10
+			cxt.strokeStyle = '#ccc'
+			cxt.stroke()
+		</script>
+	</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas绘制三角形 及形状闭合</title>
+	</head>
+	<body>
+		<pre>
+Canvas 要画多边形，需要使用 moveTo() 、 lineTo() 和 closePath() 。
+
+三角形
+
+虽然三角形是常见图形，但 canvas 并没有提供类似 rect() 的方法来绘制三角形。
+
+需要确定三角形3个点的坐标位置，然后使用 stroke() 或者 fill() 方法生成三角形。
+
+注意，默认情况下不会自动从最后一个点连接到起点。最后一步需要设置一下 cxt.lineTo(50, 50) ，
+
+让它与 cxt.moveTo(50, 50) 一样。这样可以让路径回到起点，形成一个闭合效果。
+
+当线段变粗后，起始点和结束点的链接处，拐角就出现“不正常”现象。
+
+如果需要真正闭合，可以使用 closePath() 方法。
+
+</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+
+			cxt.moveTo(50, 50);
+			cxt.lineTo(200, 50);
+			cxt.lineTo(200, 200);
+			// 手动闭合
+			cxt.closePath()
+			cxt.lineJoin = 'round' // 线条连接的样式。miter: 默认; bevel: 斜面; round: 圆角
+			cxt.lineWidth = 20
+			cxt.stroke()
+		</script>
+	</body>
+</html>

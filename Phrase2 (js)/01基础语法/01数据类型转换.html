@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>数据类型转换</title>
+	</head>
+	<body>
+		<script>
+			// 隐式转换  -0
+			// 字符串转数字 ：Number("1")  parseInt()  parseFloat()
+
+			// 数字转字符串： toString()   string()
+
+			var a = 1;
+			var b = '2';
+			var c1 = a + b;
+			var c2 = a + Number(b);
+			var c3 = a + (b - 0);
+
+			console.log("c1:",c1);
+
+			console.log("c2:",c2);
+
+			console.log("c3:",c3);
+
+			console.log( "1" - '1' );
+			console.log( "1" - '0' );
+			console.log( "1" - 0 );
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas绘制弧线</title>
+	</head>
+	<body>
+		<pre>
+使用 arc() 方法画半圆时，如果最后不调用 closePath() 方法，就不会出现闭合路径。也就是说，那是一条弧线。
+
+在 canvas 中，画弧线有2中方法：arc() 和 arcTo() 。
+
+arcTo() 画弧线:
+arcTo() 的使用方法会更加复杂，如果初学看不太懂的话可以先跳过，看完后面的再回来补补。
+
+语法：
+
+arcTo(cx, cy, x2, y2, radius)
+复制代码
+cx: 两切线交点的横坐标
+cy: 两切线交点的纵坐标
+x2: 结束点的横坐标
+y2: 结束点的纵坐标
+radius: 半径
+其中，(cx, cy) 也叫控制点，(x2, y2) 也叫结束点。
+
+是不是有点奇怪，为什么没有 x1 和 y1 ？
+
+(x1, y1) 是开始点，通常是由 moveTo() 或者 lineTo() 提供。
+
+arcTo() 方法利用 开始点、控制点和结束点形成的夹角，绘制一段与夹角的两边相切并且半径为 radius 的圆弧。
+
+
+
+</pre>
+		<canvas id="c" width="300" height="300" style="border:1px solid #035D68"></canvas>
+		<canvas id="c2" width="300" height="300" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");			
+			const cxt = cnv.getContext('2d');
+			cxt.beginPath()
+			cxt.arc(120, 120, 80, 0, 45 * Math.PI / 180,)//绘制45度的弧线
+			cxt.stroke()
+			
+			const cnv2 = document.getElementById("c2");
+			const cxt2 = cnv2.getContext('2d');
+			cxt2.moveTo(40, 40)
+			cxt2.arcTo(120, 40, 120, 120, 80)
+			cxt2.stroke()
+			
+			
+		</script>
+	</body>
+</html>

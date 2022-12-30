@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas多条线段</title>
+	</head>
+	<body>
+		<pre>
+			设置样式
+			lineWidth：线的粗细
+			strokeStyle：线的颜色
+			lineCap：线帽：默认: butt; 圆形: round; 方形: square
+		</pre>
+		<canvas id="c" width="300" height="200" style="border:1px solid #035D68"></canvas>
+		<script type="text/javascript">
+			const cnv = document.getElementById("c");
+			const cxt = cnv.getContext('2d');
+			
+			// 绘制直线
+			cxt.moveTo(50, 100)
+			cxt.lineTo(200, 100)
+			
+			// 修改直线的宽度
+			cxt.lineWidth  = 20
+			
+			// 修改直线的颜色
+			cxt.strokeStyle = '#00FF00'
+			
+			// 修改直线两端样式
+			cxt.lineCap = 'round' // 默认: butt; 圆形: round; 方形: square
+			
+			cxt.stroke()
+
+		</script>
+	</body>
+</html>

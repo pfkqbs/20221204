@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			#c{
+				width: 100vw;
+				height: 100vh;
+				background-color: black;
+			}
+			body{
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="c" width="1280" height="800"></canvas>
+		<script>
+			let ctx = c.getContext('2d')
+			// let this.time = 0
+			g = 0.98
+			class Point{
+				x = 0
+				y = 0
+				fx = 0
+				zFX = 0
+				width = 10
+				height = 10
+				color = 'red'
+				speed = 4
+				speedY = -6
+				speedX = 0
+				bili=1
+				arr = []
+				type = 'point'
+				bow = false
+				time = 0
+				alpha = 0
+				R = Math.random()*256
+				G = Math.random()*256
+				B = Math.random()*256
+				// zIndex = 
+				constructor({x,y,fx = 0,zFX = 0,speed=4,type='point'}){
+					
+					this.x = x
+					this.y = y
+					this.fx = fx
+					this.speed = speed
+					this.type = type
+					this.bili = Math.cos(Math.PI/180*zFX)
+					this.color = `rgb(${this.R},${this.G},${this.B})`
+					this.speedX = -1*Math.round(Math.sin((this.fx+180)*Math.PI/180)*this.speed*this.bili*100)/100
+					this.speedY = Math.round(Math.cos((this.fx+180)*Math.PI/180)*this.speed*this.bili*100)/100
+					if(type == 'point'){
+						console.log(this.speedX)
+						console.log(this.speedY)
+					}
+					
+				}
+				initBow(x,y){
+					
+					if(this.bow == false){
+						console.log(x,y)
+						let len = 30
+						// this.time-=1000
+						for(let i = 0;i<len;i++){
+							let interval = 360/len
+							
+							this.arr.push(new Point({x,y,fx:i*interval,zFX:0,speed:Math.random()*6,type:'bow'}))
+							this.arr.push(new Point({x,y,fx:i*interval,zFX:10,speed:Math.random()*6,type:'bow'}))
+							this.arr.push(new Point({x,y,fx:i*interval,zFX:30,speed:Math.random()*6,type:'bow'}))
+							this.arr.push(new Point({x,y,fx:i*interval,zFX:40,speed:Math.random()*6,type:'bow'}))
+							this.arr.push(new Point({x,y,fx:i*interval,zFX:50,speed:Math.random()*6,type:'bow'}))
+							this.arr.push(new Point({x,y,fx:i*interval,zFX:70,speed:Math.random()*6,type:'bow'}))
+						}
+						console.log(this.arr)
+					}
+				}
+				render(ctx){
+					this.time+=0.05
+					this.y += this.speedY*this.bili*this.time + 0.5*g*this.bili*this.time*this.time
+					// console.log(this.speedY*this.time,0.5*g*this.time*this.time,this.y)
+					this.x += this.speedX*this.bili*this.time
+					let x = this.x
+					let y = this.y
+					if(this.type == 'point'){
+						// console.log(this.speedY*this.bili*this.time,0.5*g*this.bili*this.time*this.time)
+						if(this.speedY*this.bili*this.time + 0.5*g*this.bili*this.time*this.time >=0&&this.speedY*this.bili*this.time!=0 ){
+							// console.log(this.x,this.y)
+							// console.log(this.speedY*this.bili*this.time,0.5*g*this.bili*this.time*this.time)
+							this.initBow(x,y)
+							// console.log(this.x,this.y)
+							this.bow = true
+							this.arr.forEach(item => {
+								item.render(ctx)
+							})
+							
+						}else{
+							ctx.fillStyle = this.color
+							ctx.fillRect(this.x,this.y,this.width*(this.bili),this.height*(this.bili))
+								
+						}
+					}else{
+						if(this.alpha>=0){
+							ctx.save()
+							ctx.fillStyle = this.color
+							this.alpha = 1-this.time/20
+							// ctx.globalAlpha = this.alpha
+							// ctx.shadowColor = this.color
+							// ctx.shadowBlur = 20
+							ctx.fillRect(this.x,this.y,this.width*(this.bili),this.height*(this.bili))
+							// console.log(1-this.time/7)
+							ctx.restore()
+						}
+					}
+				}
+			}
+			
+			let arr1 = []
+			for(let n = 0;n<20;n++){
+				arr1.push(new Point({x:100+Math.random()*1000,y:1000,speed:3.2+Math.random(),fx:-5+Math.random()*10}))
+			}
+			let count = 0
+			let index = 0
+			function run(){
+				ctx.clearRect(0,0,c.width,c.height)
+				count++
+				// console.log(count)
+				if(count>=100){
+					count = 0
+					
+					if(arr1[index]){
+						
+						index++
+					}
+				}
+				for(let i = 0;i<index;i++){
+					arr1[i].render(ctx)
+				}
+				// this.time+=0.05
+				requestAnimationFrame(() => {
+					run()
+				})
+			}
+			run()
+		</script>
+	</body>
+</html>

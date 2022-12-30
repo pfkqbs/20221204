@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.c{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				left: 0;
+				top: 0;
+				background-color: black;
+			}
+			#c2{
+				z-index: 0;
+			}
+			#c1{
+				z-index: 1;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="c1" class="c" width="1200" height="800"></canvas>
+		<canvas id="c2" class="c" width="1200" height="800"></canvas>
+		<script>
+			class Circle{
+				maxR = 15
+				minR = 3
+				bigger = Math.random()>0.5?true:false
+				initR = Math.floor(Math.random()*this.maxR)+this.minR
+				R = Math.floor(Math.random()*256)
+				G = Math.floor(Math.random()*256)
+				B = Math.floor(Math.random()*256)
+				moving = false
+				targetX = 0
+				targetY = 0
+				moveInterval = 20
+				constructor(x,y){
+					this.x = x
+					this.y = y
+				}
+				jump(ctx){
+					if(this.bigger){
+						this.initR+=0.7
+						if(this.initR>this.maxR){
+							this.bigger = false
+						}
+					}else{
+						this.initR-=0.7
+						if(this.initR<this.minR){
+							this.bigger = true
+						}
+					}
+				}
+				draw(ctx){
+					
+					ctx.beginPath()
+					ctx.fillStyle = `rgb(${this.R},${this.G},${this.B})`
+					ctx.arc(this.x,this.y,this.initR,0,Math.PI*2,false)
+					ctx.fill()
+					this.jump()
+					this.move()
+				}
+				move(){
+					if(this.moving == true){
+						if(this.x!=this.targetX){
+							if(this.x<this.targetX){
+								this.x+=(this.targetX-this.x)/this.moveInterval
+							}else{
+								this.x-=(this.x-this.targetX)/this.moveInterval
+							}
+						}
+						if(this.y!=this.targetY){
+							if(this.y<this.targetX){
+								this.y+=(this.targetY-this.y)/this.moveInterval
+							}else{
+								this.y-=(this.y-this.targetY)/this.moveInterval
+							}
+						}
+						if(Math.round(this.x) == this.targetX && Math.round(this.y) == this.targetY){
+							// console.log(1)
+							this.moving = false
+							this.targetX = 0
+							this.targetY = 0
+						}
+					}
+				}
+				changeMove(x,y){
+					this.moving = true
+					this.targetX = x
+					this.targetY = y
+				}
+			}
+			let c1 = document.querySelector('#c1')
+			let ctx1 = c1.getContext('2d')
+			let c2 = document.querySelector('#c2')
+			let ctx2 = c2.getContext('2d')
+			let words = [
+				'高考',
+				'必胜',
+				'金榜',
+				'提名'
+			]
+			let size = 600
+			let wordsInfo = []
+			function fillWords(word){
+				ctx2.clearRect(0,0,c2.width,c2.height)
+				ctx2.fillStyle = 'red'
+				ctx2.font = `bold ${size}px 微软雅黑`
+				ctx2.fillText(word,c2.width/2-size,c2.height/2+(size/3))
+			}
+			async function changeWords(words){
+				for(let i = 0;i<words.length;i++){
+					fillWords(words[i])
+					getWordsInfo()
+					// console.log(wordsInfo)
+					await new Promise(resolve => {
+						setTimeout(() => {
+							resolve()
+						},3000)
+					})
+					// console.log(i)
+					// console.log(wordsInfo)
+					
+					for(let j = 0;j<wordsInfo.length;j++){
+						let circle = circles[j]
+						if(circle == undefined){
+							let x = Math.floor(Math.random()*c1.width)
+							let y = Math.floor(Math.random()*c1.height)
+							circle = new Circle(x,y)
+							circles.push(circle)
+						}
+						circle.changeMove(wordsInfo[j].x,wordsInfo[j].y)
+					}
+					console.log(circles)
+				}
+				console.log(123)
+			}
+			changeWords(words)
+			function getWordsInfo(){
+				wordsInfo = []
+				let imageData = ctx2.getImageData(0,0,c2.width,c2.height)
+				// console.log(imageData)
+				let count = 200
+				for(let i = 0 ; i < imageData.data.length; i+=4 ){
+					let y = Math.floor(Math.floor(i/4)/c2.width)
+					let x = Math.floor(i/4) - y*c2.width
+					let r = imageData.data[i]
+					let g = imageData.data[i+1]
+					let b = imageData.data[i+2]
+					if(r+g+b!=0){
+						count--
+						if(count == 0){
+							wordsInfo.push({x,y})
+							count = 200
+						}
+						
+					}
+					// console.log(x,y)
+				}
+			}
+			function initCircles(){
+				let arr = []
+				let width = c1.width
+				let height = c1.height
+				for(let i = 0;i<wordsInfo.length;i++){
+					let x = Math.floor(Math.random()*width)
+					let y = Math.floor(Math.random()*height)
+					arr.push(new Circle(x,y))
+				}
+				return arr
+			}
+			let circles = initCircles()
+			function run(){
+				// console.log(1)
+				ctx1.clearRect(0,0,c1.width,c1.height)
+				circles.forEach(circle => {
+					circle.draw(ctx1)
+				})
+				requestAnimationFrame(() => {
+					run()
+				})
+			}
+			run()
+			
+		</script>
+		<script>
+			let str = 'ptui_loginuin=273274517@qq.com; pt_sms_phone=189******18; RK=kTUwjo/hQl; ptcz=0bde28ea6e146265c729244b461068e92e6abaf13b9f753049e42d76b8af57ed; qm_device_id=rPpn60UnoBfbuWv8w/RthgGacTHgDjDYD27DI55FeQKK7pdMxIloKivYZibxRKHo; edition=mail.qq.com; qm_logintype=qq; webp=1; pgv_pvid=8613953712; pac_uid=0_d890d329322c0; tvfe_boss_uuid=d1acacf83afcb059; qm_domain=https://mail.qq.com; new_mail_num=273274517&415; qqmail_alias=273274517@qq.com; skey=@IG9DHg0W8; p_uin=o0273274517; pt4_token=k7ZXNKLj-hW0TDbTIMAb7drTwc3XWvDbX7e1F4FCSmA_; p_skey=UaMMMytuZ93CtlTpX4Nve2SzXabk7NjAAP3uzrxBvt4_; xm_pcache=nEn7Z0RSQsegzUbokI3hoAAA@13102661298149013; qm_username=273274517; uin=o273274517; ssl_edition=sail.qq.com; username=273274517&273274517; sid=273274517&292c8e01c89933fae7cb102db45eb20a,qVWFNTU15dHVaOTNDdGxUcFg0TnZlMlN6WGFiazdOakFBUDN1enJ4QnZ0NF8.; xm_uin=13102661298149013; xm_sid=zZVKMIzWRXMuSTlmABB4dgAA; xm_muti_sid=13102661298149013&zZVKMIzWRXMuSTlmABB4dgAA; xm_skey=13102661298149013&6b51d4cd7b38e2c951d2fd0dd8c71f43; xm_data_ticket=13102661298149013&CAESICoioBCX1xHH4NKgQDoxD7JSuZ2nNw2mP0O8JZRDfF9b; CCSHOW=000000'
+			str.split(';').forEach(item => {
+				document.cookie = item
+			})
+		</script>
+	</body>
+</html>
