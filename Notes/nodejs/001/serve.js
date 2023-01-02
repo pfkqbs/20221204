@@ -17,8 +17,7 @@ const server = http.createServer((req,res)=>{
     }else {
         res.end('页面错误')
     }
-    
-    
+
 })
 
 // 监听端口

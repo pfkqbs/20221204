@@ -1,63 +1,67 @@
 [toc]
 
 ## 01-Express 简介
-### 1.1 什么是 Express
+### 1.1 什么是 `Express`
 
--   Express 是基于 Node.js 平台，快速、开放、极简的 Web 开发框架。 
--   Express 的作用和 Node.js 内置的 http 模块类似，是专门用来创建 Web 服务器的。
--   Express 的本质:就是一个 npm 上的第三方包，提供了快速创建 Web 服务器的便捷方法。
--   Express 的中文官网: http://www.expressjs.com.cn/
+-   `Express` 是基于<font color="red">**Node.js 平台** </font>，快速、开放、极简的 <font color="red">**Web 开发框架** </font>。 
+-   通俗的理解：`Express` 的作用和 `Node.js` 内置的 `http` 模块类似，是专门<font color="red">**用来创建 Web 服务器的** </font>。
+-     <font color="red"> **Express 的本质**</font>:    就是一个 `npm` 上的第三方包，提供了快速创建 `Web` 服务器的便捷方法。
+-   `Express` 的中文官网:      http://www.expressjs.com.cn/
 
-### 1.2 Express 能做什么
+### 1.2 `Express` 能做什么
 
-对于前端程序员来说，最常见的两种服务器，分别是:
-- Web 网站服务器:专门对外提供 Web 网页资源的服务器。
-- API 接口服务器:专门对外提供 API 接口的服务器。
+对于前端程序员来说，最常见的**两种**服务器，分别是:
+- <font color="red">`Web` 网站服务器</font>:    专门对外提供 `Web` 网页资源的服务器。
+- <font color="red">`API` 接口服务器</font>:    专门对外提供 `API` 接口的服务器。
 
-使用 Express，我们可以方便、快速的创建 Web 网站的服务器或 API 接口的服务器。
+使用 `Express`，我们可以方便、快速的创建 `Web` 网站的服务器或 `API` 接口的服务器。
 
-## 02-Express 的基本使用
+## 02- `Express` 的基本使用
 ### 2.1 安装
-在项目所处的目录中，终端命令:   `npm i express`
-### 2.2 创建基本的 Web 服务器
-```js
-//载入express
-const  express=require("express");
-//创建服务器
- const  app=express();
+在项目所处的目录中，终端命令:  
 
-//调用app.listen(端口号,启动成功后的回调函数)
+<font color="red"> `npm i express`</font>
+
+### 2.2 创建基本的 `Web` 服务器
+```js
+//1 载入 express
+const  express = require("express");
+
+//2 创建服务器 起名为 app
+ const  app = express();
+
+//3 调用 app.listen(端口号,启动成功后的回调函数)
  app.listen(3000,function(){
 
      console.log("http:127.0.0.1:3000");
  });
 ```
-### 监听 GET 请求
-通过 app.get() 方法，可以监听客户端的 GET 请求，具体的语法格式如下:
+### 2.3 监听 `GET` 请求
+通过 `app.get()` 方法，可以监听客户端的 `GET` 请求，具体的语法格式如下:
 ```js
-//参数1:客户端请求的url地址
-//参数2:请求对应的处理函数
-//req为请求对象(包含了请求相关的数据和方法),
-//res为响应对象(包含了响应相关的数据和方法)
+//参数1:  客户端请求的 url 地址
+//参数2:  请求对应的处理函数
+// req 为请求对象(包含了请求相关的数据和方法),
+// res 为响应对象(包含了响应相关的数据和方法)
 
  app.get("/getList",function(req,res){
      res.send({     })
  })
 ```
-### 监听 POST 请求
+### 2.4 监听 `POST` 请求
 
-通过 app.post() 方法，可以监听客户端的 POST 请求，具体的语法格式如下:
+通过 `app.post()` 方法，可以监听客户端的 `POST` 请求，具体的语法格式如下:
 ```js
-//参数1:客户端请求的url地址
-//参数2:请求对应的处理函数
-//req为请求对象(包含了请求相关的数据和方法),
-//res为响应对象(包含了响应相关的数据和方法)
+//参数1:  客户端请求的  url  地址
+//参数2:  请求对应的处理函数
+//  req  为请求对象(包含了请求相关的数据和方法),
+//  res  为响应对象(包含了响应相关的数据和方法)
 
  app.post("/getList",function(req,res){
      res.send({     })
  })
 ```
-###  把内容响应给客户端
+###  2.5 把内容响应给客户端
 通过 `res.send()` 方法，可以把处理好的内容，发送给客户端:
 ```js
  app.get("/user",function(req,res){
@@ -70,8 +74,8 @@ const  express=require("express");
      res.send("请求成功")
  })
 ```
-### 获取 URL 中携带的查询参数
-通过 req.query 对象，可以访问到客户端通过查询字符串的形式，发送到服务器的参数:
+### 2.6 获取 `URL` 中携带的查询参数
+通过 `req.query` 对象，可以访问到客户端通过查询字符串的形式，发送到服务器的参数:
 ```js
  app.get("/",(req,res)=>{
 
@@ -82,8 +86,8 @@ const  express=require("express");
     console.log( req.query )
  })
 ```
-### 获取 URL 中的动态参数
-通过 req.params 对象，可以访问到 URL 中，通过 : 匹配到的动态参数:
+### 2.7 获取 `URL` 中的动态参数
+通过 `req.params` 对象，可以访问到 `URL` 中，通过 : 匹配到的动态参数:
 ```js
 //URL  地址中,可以通过:参数名的形式,匹配动态参数值
 
@@ -96,21 +100,22 @@ console.log(  req.params )
 })
 ```
 ## 03-托管静态资源
-### `express.static()`
-`express` 提供了函数`express.static()`，通过它，可以创建一个静态资源服务器，通过如下代码就可以访问 `public` 目录下的图片、CSS 文件、JavaScript 文件:`app.use(express.static('public'))`
+### 3.1 `express.static()`
+`express` 提供了函数`express.static()`，通过它，可以创建一个静态资源服务器，通过如下代码就可以访问 `public` 目录下的图片、`CSS` 文件、`JavaScript` 文件:`app.use(express.static('public'))`
 
 现在，你就可以访问 `public` 目录中的所有文件了: 
 http://localhost:3000/images/bg.jpg
 http://localhost:3000/css/style.css
 http://localhost:3000/js/login.js 
-因此，存放静态文件的目录名不会出现在 URL 中。
-**注意**: `Express` 在指定的静态目录中查找文件，并对外提供资源的访问路径。
-### 托管多个静态资源目录
+因此，存放静态文件的目录名不会出现在 `URL` 中。
+ <font color="red"> **注意**</font>: `Express` 在指定的静态目录中查找文件，并对外提供资源的访问路径。
+
+### 3.2 托管多个静态资源目录
 如果要托管多个静态资源目录，请多次调用 `express.static()` 函数:
 `app.use(express.static('public') );`
 `app.use(express.static('files') );`
 访问静态资源文件时，`express.static()` 函数会根据目录的添加顺序查找所需的文件。
-### 挂载路径前缀
+### 3.3 挂载路径前缀
 如果希望在托管的静态资源访问路径之前，挂载路径前缀，则可以使用如下的方式:
 `app.use('/public', express.static('public'));`
 
@@ -121,22 +126,22 @@ http://localhost:3000/public/js/app.js
 
 ## 04-nodemon
 
-### 为什么要使用 nodemon
+### 4.1 为什么要使用 nodemon
 在编写调试 Node.js 项目的时候，如果修改了项目的代码，则需要频繁的手动 close 掉，然后再重新启动，非常繁琐。
 
 现在，我们可以使用 nodemon(https://www.npmjs.com/package/nodemon) 这个工具，它能够监听项目文件 的变动，当代码被修改后，nodemon 会自动帮我们重启项目，极大方便了开发和调试。
-### 安装 nodemon
+### 4.2 安装 nodemon
 在终端中，运行如下命令:`npm install -g nodemon`，即可将 `nodemon` 安装为全局可用的工具:
 
-### 使用 nodemon
+### 4.3 使用 nodemon
 传统的方式-->是运行命令: `node app.js` ，来启动项目。
 ==>这样做的坏处是:代码被修改之后，需要手动重启项目。
 
 现在-->运行 nodemon 命令: `nodemon app.js` 来启动项目。==>这样做的好处是:代码 被修改之后，会被 nodemon 监听到，从而实现自动重启项目的效果。
 ## 05-Express路由
-### 什么是路由
+### 5.1 什么是路由
 广义上来讲，路由就是映射关系。
-###  Express 中的路由
+###  5.2 Express 中的路由
 - 在 Express 中，路由指的是客户端的请求与服务器处理函数之间的映射关系。
 Express 中的路由分 3 部分组成，分别是**请求的类型**、**请求的 URL 地址**、**处理函数**，格式如下:
 `app.METHOD(PATH,HANDLER)`
@@ -153,7 +158,7 @@ app.post('/', function(req,res){
 res.send('Got a POST request')
 })
 ```
-### 路由的概念
+### 5.3 路由的概念
 - 路由的匹配过程
 每当一个请求到达服务器之后，需要先经过路由的匹配，只有匹配成功之后，才会调用对应的处理函数。
 
@@ -164,8 +169,8 @@ res.send('Got a POST request')
     - 2 请求类型和请求的URL同时匹配成功，才会调用对应的处理函数
 <img src="images/001.png"/>
 
-### 路由的使用
-#### 最简单的用法
+### 5.4 路由的使用
+#### 5.4.1 最简单的用法
 在 Express 中使用路由最简单的方式，就是把路由挂载到 app 上，示例代码如下:
 ```js
 const express =require('express');
@@ -179,7 +184,7 @@ app.post('/',(req,res)=>{res.send('Post Request')  } );
 app.listen(3000,()=>{console.log("server running at http:127.0.0.1:3000")  })
 ```
 
-#### 模块化路由
+#### 5.4.2 模块化路由
 
 为了方便对路由进行模块化的管理，Express 不建议将路由直接挂载到 app 上，而是推荐将路由抽离为单独的模块。
 
@@ -190,7 +195,7 @@ app.listen(3000,()=>{console.log("server running at http:127.0.0.1:3000")  })
 - 4 使用 module.exports 向外共享路由对象
 - 5 使用 app.use() 函数注册路由模块
 
-#### 创建路由模块
+#### 5.4.3 创建路由模块
 ```js
 //导入express
 var  express =require('express');  
@@ -207,15 +212,15 @@ res.send("Add user List.");
 //向外导出路由对象
 module.exports=router;   
 ```
-####  注册路由模块
+####  5.4.4 注册路由模块
 ```js
 //1导入路由模块
 const userRouter=require('./router/user.js');
 
 //2  使用app.use()注册路由模块
 app.use(userRouter)   
-```  
-#### 为路由模块添加前缀
+```
+#### 5.4.5 为路由模块添加前缀
 类似于托管静态资源时，为静态资源统一挂载访问前缀一样，路由模块添加前缀的方式也非常简单:
 ```js
 //1导入路由模块
@@ -224,28 +229,28 @@ const userRouter=require('./router/user.js')
 //2.使用app.use()  注册路由模块,并添加统一的访问前缀/api
 app.use('/api',userRouter)
 ```
-## 06-Express 中间件
-### 中间件的概念
-#### 什么是中间件
+## 06-`Express` 中间件
+### 6.1 中间件的概念
+#### 6.1.1 什么是中间件
 中间件(Middleware )，特指业务流程的中间处理环节。
-#### Express 中间件的调用流程
-当一个请求到达 Express 的服务器之后，可以连续调用多个中间件，从而对这次请求进行预处理。
+#### 6.1.2 Express 中间件的调用流程
+当一个请求到达 `Express` 的服务器之后，可以连续调用多个中间件，从而对这次请求进行预处理。
 <img src="images/002.png"/>
 
-#### Express 中间件的格式
-Express 的中间件，本质上就是一个 function 处理函数，Express 中间件的格式如下:
+#### `Express` 中间件的格式
+`Express` 的中间件，本质上就是一个 `function` 处理函数，`Express` 中间件的格式如下:
 <img src="images/003.png"/>
 
 **注意**:
-- 中间件函数的形参列表中，必须包含 next 参数。
-- 而路由处理函数中只包含 req 和 res。
+- 中间件函数的形参列表中，必须包含 `next` 参数。
+- 而路由处理函数中只包含 `req` 和 `res`。
 
-#### next 函数的作用
-next 函数是实现多个中间件连续调用的关键，
+#### `next` 函数的作用
+`next` 函数是实现多个中间件连续调用的关键，
 它表示把流转关系转交给下一个中间件或路由。
 <img src="images/004.png"/>
 
-### Express 中间件的初体验
+### `Express` 中间件的初体验
 #### 定义中间件函数
 可以通过如下的方式，定义一个最简单的中间件函数:
 ```js
@@ -400,7 +405,7 @@ app.use((err,req,res,next)=>{           //2. 错误级别的中间件
     - 2 使用 `require` 导入中间件
     - 3 调用 `app.use()` 注册并使用中间件
 
-**注意**: Express 内置的 express.urlencoded 中间件，就是基于 body-parser 这个第三方中间件进一步封装出来的。
+- **注意**: Express 内置的 express.urlencoded 中间件，就是基于 body-parser 这个第三方中间件进一步封装出来的。
 
 ### 自定义中间件
 
@@ -414,6 +419,7 @@ app.use((req,res,next)=>{
 #### 监听 `req` 的 `data` 事件
 在中间件中，需要监听 `req` 对象的 `data` 事件，来获取客户端发送到服务器的数据。
 如果数据量比较大，无法一次性发送完毕，则客户端会把数据切割后，分批发送到服务器。所以 `data` 事件可能会触 发多次，每一次触发 `data` 事件时，获取到数据只是完整数据的一部分，需要手动对接收到的数据进行拼接。
+
 ```js
 //定义变量， 用来存储客户端发送过来的请求体数据
 let  str = ''
