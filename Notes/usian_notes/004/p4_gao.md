@@ -2666,7 +2666,458 @@ const vm = new Vue({
 ```
 
 
+### TodoList 案例
+- 思路：
+    - 1 静态页
+    - 2 切组件 
+        - todolist
+        - add
+        - list
+        - filter
+    - 3 todolist [todoArr、all、tab]
+    - 4 add 组件
+        - 按下回车获取输入值
+            - data 中定义 TODO
+            - v-model 绑定
+            - @keyup.enter
+        - 将输入框的值传递给 todolist 组件
+            this.$emit(事件名，数据)
+    - 5 todolist 接收 add 组件传值 组成数组，传递给list组件
+        <add @事件名='回调函数名'></add>
+        回调函数名(res){
+            this.todoArr.push({
+                "id":new Date().getTime(),
+                "todo":res,
+                "check":false
+            })
+        }
+        <list :todoArr="todoArr"></list>
+    - 6 list 组件接收  todoArr ，循环 
+        props:['todoArr']
+        v-for=""
 
+代码如下：
+todolist/todolist.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <style>
+        .ok{
+            text-decoration: line-through;
+        }
+        .active{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <todolist> </todolist>
+    </div>
+    <script src="./add.js"></script>
+    <script src="./list.js"></script>
+    <script src="./filter.js"></script>
+    <script src="./todolist.js"></script>
+    <script>
+        const vm = new Vue({
+            el:"#app",
+            
+        })
+    </script>
+</body>
+</html>
+```
+todolist/add.js
+```js
+Vue.component("add",{
+    data(){
+      return {
+          todoVal :"",  //输入框的值        
+          all:""       //全选框
+      }
+    },
+    template:
+    `
+    <div>
+        <input 
+        type="checkbox"  
+        v-model="all" 
+        @change="allFn()" />
+
+        <input 
+        type="text" 
+        v-model="todoVal"  
+        @keyup.enter="addFn()" />
+    </div>
+    `,
+    methods: {
+        addFn(){
+            // 判断非空后回车添加
+            if(!this.todoVal){
+                alert("请输入！")
+                return;
+            }
+            //非空的话， 将input输入框的值传给todolist
+            this.$emit("addTodoVal",this.todoVal)
+
+            //回车后情况输入框
+            this.todoVal = ""
+        },
+        allFn(){
+            console.log(this.all)
+            this.$emit('addall',this.all)
+            
+        }
+    },
+})
+```
+todolist/list.js
+```js
+Vue.component("list", {
+    props: ['todoArr'],
+    template: 
+    `
+    <div>
+        <div v-for="(item,index) in todoArr" 
+        :key="item.id"> 
+            <input 
+                type="checkbox" 
+                v-model="item.check"
+                />
+
+            <span :class="{'ok':item.check}"> {{ item.todo }} </span>
+
+            <button @click="del(item.id)" >删除</button>
+        </div>
+    </div>
+    `,
+    methods: {
+        del(id) {
+            // console.log(id);
+            this.$emit("listDelId",id)
+        },
+
+    }
+});
+```
+todolist/filter.js
+```js
+Vue.component("filters",{
+    props:['nowtab'],
+    template:
+    `
+    <div>
+         <button @click="tab('all')" :class="{active:nowtab == 'all' }">全部</button>
+         <button @click="tab('ok')" :class="{active:nowtab == 'ok' }"> 已完成 true </button>
+         <button @click="tab('no')" :class="{active:nowtab == 'no' }"> 未完成 false </button>
+     </div>
+    `,
+    methods:{
+        tab(flag){
+            console.log(flag);
+            this.$emit('tabval',flag)
+        }
+    }
+})
+```
+todolist/todolist.js
+```js
+Vue.component("todolist",{
+    data() {
+        return {
+            todoArr:[],
+            tab:""
+        }
+    },
+    template:
+    `
+    <div>
+        <!-- 录入 -->
+        <add @addTodoVal="getTodoVal"
+            @addall="allTodoArr"> </add>
+
+        <!-- 展示 -->
+        <list  
+            :todoArr="info"  
+            @listDelId="delTodoArr"
+            > 
+        </list>
+        
+        <!-- 筛选 -->
+        <filters @tabval="tabTodoArr" :nowtab="tab"> </filters>
+    </div>
+    `,
+    methods: {
+        //接受add组件传递的input框输入值
+        getTodoVal(res){
+           console.log(res);
+
+           this.todoArr.push({
+               "id":new Date().getTime(),
+               "todo":res,
+               "check":false
+           })
+        },
+
+        //接收 add 组件的全选框的值 改变 todoArr 中的 check 值
+        allTodoArr(res){
+            this.todoArr.map(val=>{
+                console.log(val);
+                val.check = res;
+            })
+        },
+
+        //接受list组件传递的id删除todolist中  一条数据
+        delTodoArr(res){
+            console.log(res);
+            //通过id找下标
+            let index = this.todoArr.findIndex(val => val.id == res);
+            this.todoArr.splice(index,1)
+        },
+        //接收 filter 组件 传递的筛选值
+        tabTodoArr(res){
+            console.log(res);
+            this.tab = res
+        },
+    },
+    computed:{
+        info(){
+            if(this.tab == 'all'){
+                return this.todoArr;
+            }else if(this.tab == 'ok'){
+                return this.todoArr.filter( val=> val.check == true);
+            }else{
+                return this.todoArr.filter( val=> val.check == false);
+            }
+        }
+    }
+})
+```
+
+### `ref` 的作用
+- 绑在标签上 获取标签
+- 绑在组件上 获取组件
+- 父组件 获取 子组件的数据 和方法 ==> 使用 ref
+```html
+<div id="app">
+    <!-- ref绑定在 html 标签上 -->
+    <h1 ref="x" >哈哈</h1>
+
+    <!-- ref 绑在组件上  -->
+    <one ref="y"></one>
+</div>
+```
+```js
+Vue.component('one',{
+    template:`
+    <div>
+        <p>123</p>
+    </div>
+    `,
+    methods:{
+        fn(){
+            console.log("666")
+        }
+    }
+})
+const vm = new Vue({
+    el:"#app",
+    mounted(){
+        // 父组件 获取 子组件的数据 和方法 ==> 使用 ref
+        console.log( this.$refs.x )//ref绑定在 html 标签上 ,获取 html dom 标签
+        console.log( this.$refs.y )//ref 绑在组件上, 获取 vue 组件实例
+         this.$refs.y.fn() //父组件 获取 子组件的数据 和方法 ==> 使用 ref
+
+    }
+})
+```
+### `this.$children` 及 `this.$parent`
+
+`this.$children` 获取所有子组件的实例对象
+
+```html
+<div id="app">
+    <fu ref="y"></fu>
+</div>
+```
+```js
+ Vue.component('fu',{
+    template:`
+    <div>
+        <zi></zi>
+    </div>
+    `,
+    mounted(){               
+            console.log('获取子组件', this.$children );
+            console.log('获取子组件的数据', this.$children[0].x);
+            this.$children[0].fn();  //调用子组件的方法               
+    }
+})
+
+Vue.component('zi',{
+    data(){
+        return {
+            x:"1111111"
+        }
+    },
+    template:`
+    <div>
+        <p>123</p>
+    </div>
+    `,
+    methods:{
+        fn(){
+            console.log('666');
+        }
+    },
+    mounted(){
+        console.log( this.$parent )   //获取父组件实例
+    }
+})
+
+const vm = new Vue({
+    el:"#app",
+})
+```
+
+### `provide` 和 `inject`
+```html
+<div id="app">
+    <ye></ye>
+</div>
+```
+
+```js
+Vue.component('ye',{
+    data(){
+        return {
+            name:"qiao"
+        }
+    },
+    provide(){
+        return {
+            closeCurrent:this.closeCurrent,
+        }
+    },
+    template:`
+    <div>
+        yeye--
+        <fu></fu>
+    </div>
+    `,
+    methods: {
+        closeCurrent () {
+            console.log("你好")
+        }
+    }
+})
+Vue.component('fu',{
+    template:`
+    <div>fufu
+        <zi></zi>
+    </div>
+    `
+})
+Vue.component('zi',{
+    inject:['closeCurrent'],
+    template:`
+    <div>
+        zizi
+    </div>
+    `,
+    mounted(){
+        this.closeCurrent()
+    }
+})
+const vm = new Vue({
+    el:"#app",
+})
+```
+### $attrs 和 $listeners
+```html
+<div id="app">
+    <ye></ye>
+</div>
+```
+```js
+Vue.component('ye',{
+    data(){
+        return {
+            a:"qiao",
+            b:"18",
+            c:"",
+
+        }
+    },
+    template:`
+    <div>
+        ye:  {{ c }}
+        <fu :a="a" :b="b" @sunchuan="fun"></fu>
+    </div>
+    `,
+    methods:{
+        fun(res){
+            console.log(res);
+            this.c = res
+        }
+    }
+})
+Vue.component('fu',{
+    template:`
+    <div>fu:{{ $attrs }}
+        <zi :yeval="$attrs"  v-on="$listeners"></zi>
+    </div>
+    `
+})
+Vue.component('zi',{
+    props:['yeval'],
+    data(){
+        return {
+            sunData:"111"
+        }
+    },
+    template:`
+    <div>
+        zi: {{yeval }}---{{sunData }}
+        <button @click="fn">点击</button>
+    </div>
+    `,
+    methods:{
+        fn(){
+            this.$emit('sunchuan',this.sunData)
+        }
+    }
+})
+const vm = new Vue({
+    el:"#app",
+})
+```
+### 组件通信方式
+
+- 父子： `props`/`$emit` 、 `$ref`、  `$children`/`$parent`
+- 兄弟、非父子： `event bus`(`$emit`/`$on`)
+- 跨层：`provide`/`inject`、`$atters`/`$listeners`
+- 复杂： 本地存储、 `vuex`:
+
+### 单页面应用 `SPA`
+- 根据路径的不同显示不同组件，页面不刷新
+- 模块化开发: `vue/cli` (底层： `webpack` 搭建开发的服务器、打包 --node)
+- `yarn`包管理器: 
+    - 安装`yarn`: `npm install -g yarn`
+    - 查看版本号： `yarn -V` 或者 `yarn --version`
+    - `vscode` 如果安装失败 则需要修改注册表
+        `get-ExecutionPolicy`
+        `set-ExecutionPolicy RemoteSigned`
+    - 下载模块：`yarn add 包名`   
+    - 卸载模块：`yarn remove 包名`
+    - 全局下载`vue/cli`脚手架: `npm install -g @vue/cli`或者`yarn global @vue/cli`
 
 
 ### 单文件组件
@@ -2948,15 +3399,15 @@ d by default):
 
 ##### 4). 进入项目   
 
-   ```
-   cd 文件名
-   ```
+```shell
+cd 文件名
+```
 
 ##### 5)、设置
 
 ##### 6)、运行项目
 
-```
+```shell
 npm run serve
 ```
 
@@ -2972,48 +3423,34 @@ npm install -g @vue/cli-init
 vue init webpack 项目名
 ```
 
+> `Vue cli`  3/4 构建项目的目录结构
+> node_modules ----  项目依赖（vue 、babel、vue-router、vuex 、webpack相关，）
+> public		 ----  公共文件  / 静态资源/ 根目录
+    > public/index.html	     主模版
+    > public/favicon.ico	 网站图标
+> src			         开发目录 / 开发源代码
+    > src/assets			 静态资源（第三方库）
+    > ​src/utils              工具类
+    > ​src/api                请求的文件
+    > ​src/style              样式文件
+    > ​src/components	        `vue` 组件
+    > ​src/router				路由
+    > ​src/store				`vuex` 
+    > ​src/views				页面组件--视图组件	 
+    > ​src/APP.vue			    根组件
+    > ​src/main.js			    项目入口文件（ `new Vue（）` ）	
+> .browserslistrc		    浏览器支持情况
+> .gitignore				`git` 不维护的文件    当前是一个仓库
+> babel.config.js		   `babel` 配置   
+> package.json			   项目依赖配置文件
+> README.md			       项目说明
+> vue.config.js              `vue` 配置
 
 
 
+### `vue` 使用脚手架开发安装`vscode`插件
 
-> Vue cli  3  / 4 构建项目
+安装 `vscode` 插件： `vetur`: 解除错误提示
+安装 `vscode` 插件： `Vue VSCode Snippets`：快速生成`vue`文件模板
 
-> node_modules			项目依赖（vue 、babel、vue-router、vuex 、。。。webpack相关，）
-
-> public							公共文件  / 静态资源/ 根目录
-
-> ​			index.html		 主模版
-
-> src								 开发目录/开发源代码
-
-​		 assets				静态资源（第三方库）
-
-​            utils                  工具类
-
-​			api                     请求的文件
-
-​            style                     样式文件
-
-​			components	    vue组件
-
-​			router				 路由
-
-​			store				   vuex 
-
-​			views				页面组件--视图组件	 
-
-​		   APP.vue			 根组件
-
-​			main.js			  项目入口文件（ new Vue（） ）	
-
-.browserslistrc			浏览器支持情况
-
-.gitignore					git 不维护的文件    当前是一个仓库
-
-babel.config.js		  babel 配置   
-
-package.json			项目依赖配置文件
-
-README.md			项目说明
-
-vue.config.js              vue配置
+### totolist 案例
