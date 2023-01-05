@@ -3454,3 +3454,263 @@ vue init webpack 项目名
 安装 `vscode` 插件： `Vue VSCode Snippets`：快速生成`vue`文件模板
 
 ### totolist 案例
+
+
+
+### tab 选项卡功能案例
+
+
+### vue-router 
+创建项目时，选择 vue-router 常见成功后，看项目文件目录：
+main.js
+
+```js
+/* 引入router文件夹下的index.js */
+import router from './router'
+
+new Vue({
+  router,   //新增加的
+  render: h => h(App)
+}).$mount('#app')
+```
+router/index.js
+```js
+/*  1-- 导入 vue  */
+import Vue from 'vue'
+
+
+/*  2--导入vue-router */
+import VueRouter from 'vue-router'
+
+/* 导入 HomeView 组件 */
+import HomeView from '../views/HomeView.vue'
+
+/*  3--使用 VueRouter*/
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView
+  },
+  {
+    path: '/about',
+    name: 'about',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  }
+]
+
+/*  4-- 创建 router 实例 */
+const router = new VueRouter({
+  routes
+})
+
+/* 5--导出 router */
+export default router
+
+
+```
+### 配置 `router.js`
+
+需求： 
+url后/home    App.ue中加载 home 组件
+url后/info    App.vue中加载 info 组件
+
+router/index.js
+```js
+/*  1-- 导入 vue  */
+import Vue from 'vue'
+
+
+/*  2--导入vue-router */
+import VueRouter from 'vue-router'
+
+/* 导入 HomeView 组件 */
+import Home from '../views/Home.vue'
+
+/*  3--使用 VueRouter*/
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/home',
+    name: 'home',
+    component: Home  /* 先在上面载入 */
+  },
+  {
+    path: '/info',
+    name: 'info',
+
+    /* 路由懒加载的方式载入 */
+    component: () => import('../views/Info.vue')
+  }
+]
+
+/*  4-- 创建 router 实例 */
+const router = new VueRouter({
+  routes
+})
+
+/* 5--导出 router */
+export default router
+
+```
+
+App.vue
+
+```vue
+<template>
+  <div id="app">
+
+    <nav>
+      <router-link to="/home">Home</router-link> |
+      <router-link to="/info">Info</router-link>
+    </nav>
+
+    <router-view/>
+  </div>
+</template>
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* 选中时为绿色 */
+nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>
+```
+
+### 配置子路由 及 设置路由重定向
+router/index.js
+```js
+/*  1-- 导入 vue  */
+import Vue from 'vue'
+
+
+/*  2--导入vue-router */
+import VueRouter from 'vue-router'
+
+/* 导入 HomeView 组件 */
+import HomeView from '../views/Home.vue'
+
+/*  3--使用 VueRouter*/
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/home',
+    name: 'home',
+    component: HomeView,
+    children:[
+      {
+      path: "home1",
+      name: "home1",
+      component: () => import( '../views/Home1.vue')
+      },
+      {
+      path: "home2",
+      name: "home2",
+      component: () => import( '../views/Home2.vue')
+      },
+    ]
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import( '../views/AboutView.vue')
+  },
+  {
+    path: '/',
+    redirect:"/home/home1"   /* 路由重定向 */
+  }
+]
+
+/*  4-- 创建 router 实例 */
+const router = new VueRouter({
+  routes
+})
+
+/* 5--导出 router */
+export default router
+
+```
+App.vue
+```vue
+<template>
+  <div id="app">
+    <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </nav>
+    <router-view/>
+  </div>
+</template>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* 选中时为绿色 */
+nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>
+
+```
+Home.vue
+```vue
+<template>
+  <div class="home">
+
+    <nav>
+      <router-link to="/home/home1">Home1</router-link> |
+      <router-link to="/home/home2">home2</router-link>
+    </nav>
+    <router-view/>
+  </div>
+</template>
+
+<script>
+
+export default {
+  name: 'HomeView',
+  components: {
+    
+  }
+}
+</script>
+
+```

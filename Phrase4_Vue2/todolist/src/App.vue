@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Todolist></Todolist>
+    <Todolist />
   </div>
 </template>
 
@@ -10,7 +10,9 @@ import Todolist from "./todolist/Todolist";
 
 export default {
   name: "App",
-  components: { Todolist},
+  components: {
+    Todolist,
+  },
 };
 </script>
 
