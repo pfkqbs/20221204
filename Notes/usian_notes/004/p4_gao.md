@@ -3453,7 +3453,7 @@ vue init webpack 项目名
 安装 `vscode` 插件： `vetur`: 解除错误提示
 安装 `vscode` 插件： `Vue VSCode Snippets`：快速生成`vue`文件模板
 
-### totolist 案例
+### `totolist` 案例
 
 
 
@@ -3514,6 +3514,7 @@ export default router
 
 
 ```
+
 ### 配置 `router.js`
 
 需求： 
@@ -3714,3 +3715,247 @@ export default {
 </script>
 
 ```
+
+### 面试题： `vue` 给对象新增属性，页面没有响应
+
+__原 理__：由于 `vue` 会在初始化实例时对属性执行 `getter` `setter` 转化，所以 属性必须在`data`对象上存在，才能让`vue` 将它转换为响应式的。
+
+__`Vue` 双向绑定的原理__：`vue` 采用 数据劫持 结合发布者--订阅者 模式的方式，通过  `Object.defineProperty()` 劫持 data 属性的`setter`、`getter` 在数据变动发布消息给订阅者，触发相应的监听回调。
+
+__解决__：`vue `提供了 `$set` 方法用来触发视图更新：`this.$set("this.obj","y",888)`
+```js
+data(){
+    return {
+        obj:{
+            x:777
+        }
+    }
+},
+mounted(){
+    this.obj.y = 888
+},
+```
+```js
+for(let key in obj){
+    Object.defineProperty(obj,key,{
+        set(){
+            //input 改变了 obj.x 的值 ==> obj:{x== input 的值 }
+        },
+        get(){
+            // 当页面上 {{ obj.x }} 自动的===》通知订阅者 将 {{obj.x }} ===> 1
+        }
+    })
+}
+```
+### vue 扩展学习了解
+
+`vue` 创建项目时 
+○ Choose Vue version                  选择版本 一般要选
+○ Babel                               `ES6`转`ES5`  一般要选
+○ TypeScript                          `js`超集 增加数据类型检测 一般不选
+○ Progressive Web App (PWA) Support   创建目录  一般不选
+○ Router                              路由 根据实际需要选择
+○ Vuex                                `vuex` 数据管理 根据实际需要选择
+○ Css pre-processors                  `css` 预处理器 根据实际需要选择
+○ Linter-Formatter                    格式检测 一般不选
+○ Unit Testing                        单元测试 一般不选
+○ E2E Testing                         测试 一般不选
+
+适当了解 `TypeScript`
+学习 `uni-app` 小程序多端
+
+### 移动端案例
+- 涉及知识点：
+    - 子路由配置
+    - 路由别名设置
+    - 路由传参 `params`和`query` 的区别
+    - `$router` 和 `$route` 的区别
+    - 调接口 `axios` 的简单封装及 `axios` 的安装及使用
+    - 点击我的 再点首页 缓存起来,不会再次请求接口，解决办法 `keep-alive` 标签包裹 `router-view` 标签 :`<keep-alive>   <router-view>  </router-view>  </keep-alive>`
+    - 路由懒加载的作用：按需加载组件 及  分包
+    - 组件的加载、卸载涉及 两个钩子函数： 加载（激活）：`activated(){}`  离开（失活）：`deactivated(){}`
+    - 监听路由变化 ，获取路由传参的参数
+
+
+
+
+
+`mockjs` 模拟数据或者 模拟 `get` 请求可以写一个 `json` 文件
+
+- 使用原生 `ajax`  及 `json` 模拟 `get` 请求
+
+```js
+const xhr = new XMLHttpRequest();
+xhr.open("get",'/list.json',true);
+xhr.send();
+let _this = this    //或者下面的函数写成箭头函数
+xhr.onreadystatechange = function(){
+    if(xhr.readyState == 4 && xhr.status == 200){
+        // console.log( xhr.responseText )
+        let obj = JSON.parse(  xhr.responseText )
+        console.log( obj )
+
+        //赋值
+        _this.arr =  obj.info
+    }
+}
+```
+- 使用 `promise` 封装 `ajax` 
+```js
+function get(url){
+    const xhr = new XMLHttpRequest();
+    xhr.open("get",url,true);
+    xhr.send();
+    return new Promise(function(ok,no){
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4  ){
+               if(xhr.status == 200){
+                   ok(JSON.parse(  xhr.responseText )) 
+               }else{
+                    no({"err":"no"})
+               }              
+            }
+        }
+    })
+
+}
+export default get;
+```
+- `promise` 封装的 `ajax`  `.then()`去获取相应数据
+```js
+//调接口
+get('/list.json')
+.then(res=>{
+    // console.log('res',res)
+    this.arr = res.info
+})
+.catch(res=>{
+    console.log(res)
+})
+```
+- 使用 `async` 和 `await` 调接口 
+```js
+async getList2(){
+    let res = await get('/list.json')  //请求出错了，后面的都不执行了，怎么规避呢 使用try catch
+    this.arr = res.info
+}
+```
+- 使用 `async` 和 `await` 调接口 请求出错了，后面的都不执行了，怎么规避呢？
+```js
+ async getList2(){
+    try{
+        let res = await get('/list.json')  //请求出错了，后面的都不执行了，怎么规避呢 使用try catch
+        this.arr = res.info
+    }catch{
+        alert('请求错误！')
+    }
+}
+
+```
+- 使用第三方库 `axios`
+> 官方网站： http://www.axios-js.com/zh-cn/docs/
+> 安装 `npm i axios -S`
+
+局部载入
+```js
+// 第一步 组件内局部 载入 axios
+import axios from 'axios'
+
+//使用 axios
+axios.get('./list.josn').then(res=>{
+    console.log(res)
+    this.arr = res.data.info
+})
+```
+
+`main.js`  全局载入
+```js
+import axios from 'axios'
+Vue.prototype.$http = axios;
+
+```
+
+全局载入后，在组件中使用：
+
+```js
+this.$http.get('/list.json').then(res=>{
+    console.log( res )
+})
+
+```
+编程式导航
+- <font color="red">`$router` 编程式导航的方法：（跳转、前进、后退）</font>
+- <font color="red">`$route`  路由信息对象 （地址、参数）</font>
+
+```js
+// 方法1----添加历史记录可前进后退
+this.$router.push('/info')  
+
+// 方法2----添加历史记录可前进后退
+this.$router.push({"name":'info'}) 
+
+// 方法3----添加历史记录可前进后退
+this.$router.push({"path":'/info'})  
+
+//方法4----替换页面  无前进和后退
+this.$router.replace('/info') 
+```
+跳转到详情页后，每个商品应该详情页是不一样的。
+__跳转详情页 怎么传参？路由传参__
+- 路由传参：
+    - __`params`传参: http://127.0.0.1:8080/info/1/2/3__
+        - <font color="red">这种传参地址上不表现，可以传参数，不能刷新，不能分享</font>
+        - 路由配置：`path:"/info/:myid/:xx"`       
+        - __路由跳转方式1__： ```this.$router.push(`/info/${id}/xx`)```    
+        - __路由跳转方式2__： `this.$router.push({"name":"info",params:{myid:id} })`
+    - __`quwey`传参: http://127.0.0.1:8080/info?d=1&num=10&search=7__
+        - <font color="red">这种传参地址上表现，可以传参数，可以刷新 ,可以分享  </font>
+        - __路由跳转方式1__： ```this.$router.push(`/info?id=${id}&xx=xxxx`)```   
+        - __路由跳转方式2__： `this.$router.push({"name":"info",query:{"id":id} }) `  
+        - __路由跳转方式3__： `this.$router.push({"path":"/info",query:{"id":id} }) ` 
+- 路由懒加载：
+    - 路由变化时加载相关组件
+    - 打包时 分包
+- 打包：查看 `package.json` 文件中的命令： `npmn run build`
+
+- 监听路由变化 ，获取路由传参的参数
+```js
+// 第一种方法： watch 监听路由信息改变 获取路由参数
+watch:{
+    $route:{
+        handler:function(newvalue){
+            console.log( newvalue.query )
+        },
+        deep:true,
+        immediate:true
+    }
+}
+```
+
+```js
+// 方法 2：  挂载完成钩子函数
+updated(){
+    console.log( this.$route.query )
+}
+```
+```js
+//方法3： 路由守卫、路由生命周期函数、路由钩子函数
+
+
+```
+l路由守卫钩子函数：
+
+- 全局 -- 写在路由配置文件 `index.js` 中  （ 全部路由变化 ）
+
+  	- 改变前/ 进入前：  拦截操作  `router.beforeEach((to，from，next)=>{  })`
+
+  - 改变后/ 进入后：  获取路由信息    `router.afterEach((to，from，next)=>{  })`
+  - 进入完成/ 解析守卫：  获取路由信息   `router.beforeResolve((to，from，next)=>{  })` 
+
+- 组件内 -- 写在组件中  （ 当前组件涉及的路由变化 ）
+
+  - 进入前 ： `beforeRouteEnter()`
+  - 改变： `beforeRouteUpdate()`
+  - 离开：`beforeRouteLeave()`
+
+- 独享 -- 写在路由配置文件  `index.js` 中，  （ 当前路由变化 ）

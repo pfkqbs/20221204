@@ -1,0 +1,7 @@
+{
+    "info":[
+        {"id":"001","name":"大花猫","price":"2000","imgsrc":"/img/1.jpg"},
+        {"id":"002","name":"小花猫","price":"2300","imgsrc":"/img/2.jpg"},
+        {"id":"003","name":"大黑猫","price":"8000","imgsrc":"/img/0.jpg"}
+    ]
+}
