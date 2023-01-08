@@ -3947,15 +3947,61 @@ l路由守卫钩子函数：
 
 - 全局 -- 写在路由配置文件 `index.js` 中  （ 全部路由变化 ）
 
-  	- 改变前/ 进入前：  拦截操作  `router.beforeEach((to，from，next)=>{  })`
-
-  - 改变后/ 进入后：  获取路由信息    `router.afterEach((to，from，next)=>{  })`
-  - 进入完成/ 解析守卫：  获取路由信息   `router.beforeResolve((to，from，next)=>{  })` 
+    - 改变前/ 进入前：  拦截操作  `router.beforeEach(to，from，next){  }`
+    - 改变后/ 进入后：  获取路由信息    `router.afterEach(to，from，next){  }`
+    - 进入完成/ 解析守卫：  获取路由信息   `router.beforeResolve(to，from，next){  }` 
 
 - 组件内 -- 写在组件中  （ 当前组件涉及的路由变化 ）
 
-  - 进入前 ： `beforeRouteEnter()`
-  - 改变： `beforeRouteUpdate()`
-  - 离开：`beforeRouteLeave()`
+    - 进入前 ： `beforeRouteEnter(to，from，next){  }`
+    - 改变： `beforeRouteUpdate(to，from，next){  }`
+    - 离开：`beforeRouteLeave(to，from，next){  }`
 
 - 独享 -- 写在路由配置文件  `index.js` 中，  （ 当前路由变化 ）
+- 路由元信息
+```js
+meta:{
+    title:"首页"
+}
+```
+然后 可以在跳转后设置页面的标题： `router.afterEach` 中设置 `document.title = to.meta.title`
+
+### 组件生命周期/ 钩子函数
+- 创建阶段
+    - 创建前  `beforeCreate`
+    - 创建后   `created`
+- 挂载阶段
+    -  挂载前  `beforeMount`
+    -  挂载后  `mounted`   --获取 真实 dom 节点
+- 更新阶段（data/props发生改变）
+    -  更新前  `beforeUpdate`
+    -  更新后  `updated`
+- 卸载、销毁阶段
+    -  销毁前   `beforeDestroy`
+    -  销毁后  `destroyed`
+- keep-alive :
+    - `activated`
+    - `deactivated`
+
+
+### 项目打包 
+`npm run build`
+打包后，打开index.htmL 一堆404的报错
+css js 文件引入` /` 改为  `./` 
+让他默认 `vue.config.js` 配置 相关即可修改
+```js
+publicPath:'./',   //打包默认路径
+
+```
+
+###  vuex
+文档： https://vuex.vuejs.org/zh/index.html
+#### vuex  是什么?
+Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式 + 库。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。
+
+需求：
+one 组件 --X name：高  （登录后保存的用户名）
+two: 组件 需要 name （主页  欢迎 xx）
+three： 组件也需要 并且修改了  name："wang"  (个人中心---)
+Four: 组件 也需要 （购物车）
+

@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { onBeforeRouteUpdate } from 'vue-router/types/composables';
 
     export default {
         data(){
@@ -47,9 +46,13 @@ import { onBeforeRouteUpdate } from 'vue-router/types/composables';
         //     next();
         // },
 
-        // beforeRouteLeave(){
-
-        // },
+        beforeRouteLeave(){
+            console.log( "离开前")
+            let f = confirm("确定要离开吗？")
+            if(f){
+                next();
+            }
+        },
     }
 </script>
 

@@ -57,7 +57,7 @@ import get from '../../tool/http.js'
                 //原生ajax 请求数据
 
                 // const xhr =new XMLHttpRequest();
-                // xhr.open("get",'/list.json',true);
+                // xhr.open("get",'./list.json',true);
                 // xhr.send();
                 // let _this = this    //或者下面的函数写成箭头函数
                 // xhr.onreadystatechange = function(){
@@ -70,7 +70,7 @@ import get from '../../tool/http.js'
                 // }
 
                 // 使用 封装好的 ajax
-                // get('/list.json')
+                // get('./list.json')
                 // .then(res=>{
                 //     // console.log('res',res)
                 //     this.arr = res.info
@@ -80,12 +80,12 @@ import get from '../../tool/http.js'
                 // })
             },
             // async getList2(){
-            //     let res = await get('/list.json')  //请求出错了，后面的都不执行了，怎么规避呢 使用try catch
+            //     let res = await get('./list.json')  //请求出错了，后面的都不执行了，怎么规避呢 使用try catch
             //     this.arr = res.info
             // }
             async getList2(){
                 try{
-                    let res = await get('/list.json')  //请求出错了，后面的都不执行了，怎么规避呢 使用try catch
+                    let res = await get('./list.json')  //请求出错了，后面的都不执行了，怎么规避呢 使用try catch
                     this.arr = res.info
                 }catch{
                     alert('请求错误！')
