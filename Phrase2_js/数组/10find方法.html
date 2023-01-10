@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组方法-- find</title>
+</head>
+<body>
+    <script>
+        var arr = ["a","b","c","d"];
+
+        // find方法：需求：判断数组中是否存在某个元素 有则返回哪个元素
+        var  d = arr.find(function(value,index){
+            // console.log( value,index )
+            return value == "c"
+        });
+        console.log( '数组中元素c是：',d )
+
+    </script>
+</body>
+</html>

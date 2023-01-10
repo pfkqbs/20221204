@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" name="" id="todo">
+    <button id="btn" onclick="add()">添加</button>
+
+    <ul id="ul">
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <script>
+
+        // 需要处理的数据存放数组
+        var arr = ["11","22","33"];
+
+        // 添加事件的方法
+        function add(){
+            // 获取input 的值
+            var inputVal = document.getElementById('todo').value;
+            console.log(inputVal )
+
+            arr.push(inputVal);
+
+            show();  //添加完后再次渲染到页面
+        }
+
+        // 渲染页面函数方法
+        function show(){
+            var str = '';
+            for(var i = 0;i<arr.length;i++){
+                str += `<li> ${arr[i]} </li>`
+            }
+            // console.log( str )
+            document.getElementById('ul').innerHTML = str;
+        }
+
+        // 一进入页面 调用渲染函数
+        show();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组方法 -- findIndex</title>
+</head>
+<body>
+    <script>
+        var arr = ["a","b","c","d"];
+
+        // findIndex方法：需求： 判断数组中元素 c出现的下标
+        var  b = arr.findIndex(function(value,index){
+            // console.log( value,index )
+            return value == "c"
+        });
+        console.log( '数组中元素c的下标是：',b )
+
+
+    </script>
+</body>
+</html>

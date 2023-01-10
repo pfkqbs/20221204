@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组方法--filter</title>
+</head>
+<body>
+    <script>
+        var arr = ["a","b","c","d"];
+
+        // filter方法：需求：判断数组中是否存在某个元素 有则返回那个元素组成的数组
+        var  e = arr.filter(function(value,index){
+            // console.log( value,index )
+            return value == "c"
+        });
+        console.log( '数据过滤：',e )
+    </script>
+</body>
+</html>

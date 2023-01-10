@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组方法--some</title>
+</head>
+<body>
+    <script>
+        // some 方法判断是否有大于2的元素，有则返回TRUE，没有则返回false
+        var arr = [1,2,3,4];
+
+        var  a = arr.some(function(value,index){
+            return value >2;
+        });
+        console.log( '判断是否有大于2的元素',a )
+
+    </script>
+</body>
+</html>
