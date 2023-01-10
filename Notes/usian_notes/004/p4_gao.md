@@ -4005,3 +4005,6 @@ two: 组件 需要 name （主页  欢迎 xx）
 three： 组件也需要 并且修改了  name："wang"  (个人中心---)
 Four: 组件 也需要 （购物车）
 
+### `autoprefixer` : 
+autoprefixer 插件 就可以帮我们自动补齐前缀，解放双手，关怀前端人的心智负担。它和 less、scss 这样的预处理器不同，它属于后置处理器，所谓 预处理器 是指在打包之前进行处理，所谓 后置处理器 是在代码打包生成后再进行处理。
+autoprefixer 其实是 postcss 的一个插件，postCss 本身是一个用 JavaScript 工具和插件转换 CSS 代码的工具，他提供了许多强大的处理 CSS 的功能，

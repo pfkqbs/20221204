@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        <h1>two 用户名是  {{  $store.state.name }}</h1>
     </div>
 </template>
 

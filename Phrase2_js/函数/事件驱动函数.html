@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width:100vw;
+            height:100vh;
+            border:1xp solid tomato;
+            background: #fff;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="night()">夜晚</button>
+    <div id="box">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores quisquam enim cupiditate modi nihil. Delectus quas obcaecati aspernatur necessitatibus? Ullam, provident quos alias vero ipsam laboriosam mollitia quia labore nam?
+    </div>
+
+    <script>
+        function night(){
+            let divDom = document.getElementById('box')
+            console.log(divDom )
+
+            divDom.style.background = "black";
+            divDom.style.color = "white";
+
+        }
+    </script>
+</body>
+</html>
