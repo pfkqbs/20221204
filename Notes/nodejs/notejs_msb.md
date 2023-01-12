@@ -1,11 +1,11 @@
 [toc]
 
-# nodejs 的简介和安装
+# `nodejs` 的简介和安装
 
-##  一个基于Chrome V8 引擎的服务器 JS 运行环境。发明人：Ryan Dahl。发布日期2009年5月
+##  一个基于`Chrome V8` 引擎的服务器 `JS` 运行环境。发明人：`Ryan Dahl`。发布日期2009年5月
 
-## 安装Nodejs
-- 可以安装在windows mac  linux 上。
+## 安装`Nodejs`
+- 可以安装在`windows` `mac`  `linux` 上。
 - 中文官网：http://nodejs.cn
 - 按照自己计算机运行环境进行下载安装包
 - 路径不用改，直接安装
@@ -34,9 +34,9 @@ server.listen(3000)
 ## 路由
 通过路由进行页面的读取，这个就是顶层路由设计
 顶层路由设计：
-- 物理文件层次和URL是没有任何关系的
-- Nodejs是可以做顶层路由设计的，一个页面URL是可以自定义的
-- 用户输入的url 是可以映射任何HTML页面的。
+- 物理文件层次和`URL`是没有任何关系的
+- `Nodejs`是可以做顶层路由设计的，一个页面`URL`是可以自定义的
+- 用户输入的`url` 是可以映射任何HTML页面的。
 
 比如：
  http://127.0.0.1:3000/answers  用户的回答
@@ -132,6 +132,7 @@ server.listen(3000)
 解决办法是 `express` 
 
 常见 `ContextType` 文件类型
+
 | 文件格式类型 | `ContextType` 设置文件头   | 
 | :-----:   |  :-----:  | 
 | json   |   application/json text/x-json   | 
@@ -287,11 +288,11 @@ res.setHeader("Context-Type","image/png");
     创建`module/01.js`
     创建`module/02.js`
     创建`module/001.html`,引入`js`文件，是可以跨文件输出的；
-    **HTML的宿主环境，多个js文件公用一个html宿主，此时他们的作用域是公用的；**
+    **`HTML`的宿主环境，多个`js`文件公用一个`html`宿主，此时他们的作用域是公用的；**
 
 - `nodejs`多文件引用
 `require()`引用文件在引用的同时也在执行
-**nodejs文件作用域天生隔离，因为nodejs没有window对象**
+**`nodejs`文件作用域天生隔离，因为`nodejs`没有`window`对象**
 
 文件之间相互通信，文件需要让自己暴露
 a.js
@@ -309,8 +310,8 @@ var a = require('./a.js');console.log(a.num)
 |  app.js   |      |  `var a = require('./a.js');console.log(a.num)`  |
 
 
-module.exports命令
-当一个js文件仅仅希望暴露一个参数，通常是构造函数，此时我们可以使用module.export.**如果文件中要暴露多个参数，此时需要命名空间使用 export.**
+`module.exports`命令
+当一个`js`文件仅仅希望暴露一个参数，通常是构造函数，此时我们可以使用`module.export`.**如果文件中要暴露多个参数，此时需要命名空间使用 export.**
 **如果只有一个参数并且是构造函数使用 module.exports.**
 
 **为什么`require('./')` 必须加`./`呢 ?**

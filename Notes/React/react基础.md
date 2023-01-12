@@ -1,21 +1,28 @@
+[toc]
+
 单页面应用：
 
 
 
-#### react 初始化项目:** 
+#### `react` 初始化项目: 
 
-命令npx create-react-app 后面的my-app为项目名称
+命令`npx create-react-app` 后面的`my-app`为项目名称
 
 ```shell
- 推荐使用 npx create-react-app my-app
-或       npm init react-app my-app
-或       yarn create react-app my-app
+#推荐使用 
+npx create-react-app my-app
+#或       
+npm init react-app my-app
+#或       
+yarn create react-app my-app
 ```
 
 启动项目 , 在根目录执行命令:
 
 ```sh
-npm start   或者yarn start
+npm start   
+#或者
+yarn start
 ```
 
 #### **在脚手架中使用react**
@@ -47,7 +54,7 @@ jsx是javaScriptde 的简写, 表示在JavaScript代码XML(HTML)格式的代码
 
 优势: 声明式语法更加直观 与HTML结构相同, 降低了学习成本, 提升了开发效率
 
-#### **jsx是React的核心内容**
+#### **`jsx`是`React`的核心内容**
 
 ```js
 <div className="shopping-list">

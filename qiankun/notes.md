@@ -309,7 +309,7 @@ module.exports = {
 
 `qiankun` 是通过 `fetch` 去获取子应用注册时配置的静态资源`url`，所有静态资源必须是支持跨域的，那就得设置允许源了
 涉及到子应用名称的，都统一使用`package`中的`name`字段，官方也是推荐使用的这个`name`
-需要打包成`umd`格式，是为了让 `qiankun` 拿到子应用export 的生命周期函数
+需要打包成`umd`格式，是为了让 `qiankun` 拿到子应用 export 的生命周期函数
 
 2、`src/router/index.js`改为只暴露`routes`，`new Router`改到`main.js`中声明
 
