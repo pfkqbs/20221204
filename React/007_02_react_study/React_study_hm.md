@@ -294,7 +294,7 @@ const list = (
     </h1>
 )
 ```
-##  5 `React` 组件
+##  5 `React` 组件基础
 
 ### 5.1 `React` 组件介绍
 - 组件时 `React` 的一等公民，使用 `React` 就是在用组件
@@ -759,7 +759,7 @@ class App extends React.Component{
     }
 }
 ```
-#### 多个表单元素优化：
+#### 5.8.4 多个表单元素优化：
 - 问题：每个表单元素都有一个单独的事件处理程序处理太繁琐
 - 优化： 使用一个事件处理程序同时处理多个表单元素
 - 优化步骤：
@@ -852,7 +852,7 @@ class App extends React.Component{
 }
 ```
 
-#### 非受控组件 （`DOM`方式）
+#### 5.8.5 非受控组件 （`DOM`方式）
 - 说明： 借助 `ref` ,使用原生 `DOM` 方式来获取表单元素值
 - `ref` 的作用： 获取 `DOM` 或组件
 - 使用步骤：
@@ -874,7 +874,13 @@ class App extends React.Component{
 
     ```js
     class App extends React.Component{
-   
+        constructor(){
+            super()
+
+            //创建 ref
+            this.txtRef = React.createRef()
+        }
+      
         //初始化state
         state = {
             txt:'aaa',
@@ -884,7 +890,10 @@ class App extends React.Component{
         }
 
         //事件处理程序
-        handleForm = e =>{
+        getTxt = e =>{
+
+            // 通过 `ref` 对象获取到文本框的值
+            console.log( this.txtRef.current.value)
 
             //获取当前DoM 对象
             const target = e.target
@@ -900,7 +909,6 @@ class App extends React.Component{
             })
         }
     
-
         //渲染页面
         render(){
             return (
@@ -909,34 +917,152 @@ class App extends React.Component{
                 <input 
                     type="text"
                     name="txt" 
+                    ref={this.txtRef}
                     value={this.state.txt} 
-                    onChange={this.handleForm}/>
-
-                {/* 富文本框 */}
-                <textarea 
-                    value={this.state.content} 
-                    name="content"
-                    onChange={this.handleForm}>
-                </textarea>
-
-                {/* 下拉框 */}
-                <select 
-                    name="city"
-                    value={this.state.city} 
-                    onChange={this.handleForm}>
-                    <option value="sh">上海</option>
-                    <option value="bj">北京</option>
-                    <option value="gz">广州</option>
-                </select>
-
-                {/* 复选框 */}
-                <input 
-                    type="checkbox"
-                    name="isChecked" 
-                    checked={this.state.isChecked} 
-                    onChange={this.handleForm}/>
+                    onChange={this.handleForm}/>               
+                <button onClick={this.getTxt}>点击获取文本框的值</button>
             </div>
             )
         }
     }
     ```
+
+### 5.9 需求分析：
+- 渲染评论列表（列表渲染）
+    - 在 `state` 中初始化评论列表数据
+    - 使用数组的 `map` 方法遍历 `state` 中的列表数据
+    - 给每个被遍历的 `li` 元素添加 `key` 属性
+
+- 没有评论数据是渲染暂无评论内容（条件渲染）
+    - 判断列表数的长度是否为 0
+    - 如果为 0 ，则渲染暂无评论
+
+- 获取评论信息，包括评论人和评论内容（受控组件）
+    - 使用受控组件方式处理表单元素
+- 发表评论，更新评论列表（`setState()` ）
+    - 给按钮绑定单击事件
+    - 在事件处理程序中，通过 `state` 获取评论信息
+    - 将评论信息添加到 `state` 中，并调用 `setState()` 方法更新 `state`
+    - 边界情况： 清空文本框
+    - 边界情况： 非空判断
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+/* 
+  22评论列表案例（5-发表评论-2边界情况）
+*/
+
+import './index.css'
+
+class App extends React.Component {
+  // 初始化状态
+  state = {
+    comments: [
+      { id: 1, name: 'jack', content: '沙发！！！' },
+      { id: 2, name: 'rose', content: '板凳~' },
+      { id: 3, name: 'tom', content: '楼主好人' }
+    ],
+
+    // 评论人
+    userName: '',
+    // 评论内容：
+    userContent: ''
+  }
+
+  // 渲染评论列表：
+  renderList() {
+    const { comments } = this.state
+
+    if (comments.length === 0) {
+      return <div className="no-comment">暂无评论，快去评论吧~</div>
+    }
+
+    return (
+      <ul>
+        {comments.map(item => (
+          <li key={item.id}>
+            <h3>评论人：{item.name}</h3>
+            <p>评论内容：{item.content}</p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  // 处理表单元素值
+  handleForm = e => {
+    const { name, value } = e.target
+
+    this.setState({
+      [name]: value
+    })
+  }
+
+  // 发表评论：
+  addComment = () => {
+    const { comments, userName, userContent } = this.state
+
+    // 非空校验
+    if (userName.trim() === '' || userContent.trim() === '') {
+      alert('请输入评论人和评论内容')
+      return
+    }
+
+    // 将评论信息添加到state中
+    const newComments = [
+      {
+        id: Math.random(),
+        name: userName,
+        content: userContent
+      },
+      ...comments
+    ]
+
+    // 文本框的值如何清空？ 要清空文本框只需要将其对应的state清空即可
+    this.setState({
+      comments: newComments,
+      userName: '',
+      userContent: ''
+    })
+  }
+
+  render() {
+    const { userName, userContent } = this.state
+
+    return (
+      <div className="app">
+        <div>
+          <input
+            className="user"
+            type="text"
+            placeholder="请输入评论人"
+            value={userName}
+            name="userName"
+            onChange={this.handleForm}
+          />
+          <br />
+          <textarea
+            className="content"
+            cols="30"
+            rows="10"
+            placeholder="请输入评论内容"
+            value={userContent}
+            name="userContent"
+            onChange={this.handleForm}
+          />
+          <br />
+          <button onClick={this.addComment}>发表评论</button>
+        </div>
+
+        {/* 通过条件渲染决定渲染什么内容： */}
+        {this.renderList()}
+      </div>
+    )
+  }
+}
+
+// 渲染组件
+ReactDOM.render(<App />, document.getElementById('root'))
+
+```
