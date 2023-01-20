@@ -32,13 +32,14 @@
 				
 				//一般方法
 				speak(){
-					// speak方法放在哪里？  --类的实例对象，供实例使用
-					//通过Person 实例调用speak时，speak中的this就是Person实例
+					// speak方法放在哪里？  --类的原型对象上，供实例使用
+
+					//通过 Person 实例调用 speak 时，speak 中的 this 就是 Person 实例
 					console.log(`我叫${this.name},今年 ${this.age} 了。`)
 				}
 			}
 			
-			// 创建一个Student类  继承Person类
+			// 创建一个 Student 类  继承 Person 类
 			class Student extends Person{
 				constructor(name,age,grade){
 					super(name,age)//spuer放在前面，获取父类的属性
@@ -55,14 +56,14 @@
 			
 			console.log(p1)
 			p1.speak()
-			// p1.speak().call({name:"",age:""})
+			// p1.speak().call({name:"",age:""})    //更改  this 指向了 。
 			
 			const s1 = new Student("小张",16,"高一")
 			console.log(s1)
 			s1.speak()
 			
 			
-			类中可以直接写赋值语句，即是给类添加一个属性
+			//类中可以直接写赋值语句，即是给类添加一个属性
 			
 
 

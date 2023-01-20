@@ -2,7 +2,7 @@
 
 # 组件通信
 
-### props
+### `props`
 
 适用于父子组件通信
 
@@ -114,7 +114,7 @@ export default Son
 
 ```
 
-### Context
+### `Context`
 
 适用于跨层级组件之间通信
 
@@ -198,7 +198,7 @@ export default GrandSon
 
 特别注意
 
-> 如果需要消费多个 Context,则 React 需要使每一个 consumer 组件的 context 在组件树中成为一个单独的节点。
+> 如果需要消费多个 `Context`,则 `React` 需要使每一个 `consumer` 组件的 `context` 在组件树中成为一个单独的节点。
 
 ```js
 // provider
@@ -231,11 +231,11 @@ export default GrandSon
 
 ```
 
-> 很多优秀的 React 组件的核心功能都通过 Context 来实现的，比如 react-redux 和 react-router 等，所以掌握 Context 是必须的。
+> 很多优秀的 `React` 组件的核心功能都通过 `Context` 来实现的，比如 `react-redux` 和 `react-router` 等，所以掌握 `Context` 是必须的。
 
-### OnRef
+### `OnRef`
 
-OnRef 的原理很简单，本质上就是通过 props 将子组件的组件实例（也是我们常说的 this）当作参数，通过回调传到父组件，然后在父组件就可以拿到子组件的实例，拿到了它的实例就可以调用它的方法（为所欲为）了。
+`OnRef` 的原理很简单，本质上就是通过 `props` 将子组件的组件实例（也是我们常说的 `this`）当作参数，通过回调传到父组件，然后在父组件就可以拿到子组件的实例，拿到了它的实例就可以调用它的方法（为所欲为）了。
 
 ```js
 // 父组件
@@ -308,7 +308,7 @@ export default Son
 
 ```
 
-### ref
+### `ref`
 
 `ref`是`react`提供给我们的一个属性,通过它，我们可以访问 `DOM` 节点或者组件.
 
@@ -376,7 +376,7 @@ export default Son
 ```
 
 > 值得注意的是，我们必须通过 `this.childRef.current`才能拿到子组件的实例。
->  使用 ref 常见的场景有管理焦点，文本选择或媒体播放、触发强制动画、集成第三方 DOM 库等。
+>  使用 `ref` 常见的场景有管理焦点，文本选择或媒体播放、触发强制动画、集成第三方 `DOM` 库等。
 
 ### 第三方工具
 
@@ -1562,22 +1562,22 @@ export default memo(Son3)
 
 看到了这里，肯定很多同学都在问，hooks 哪去了？别急呢，马上就来 👇
 
-## hooks
+## `hooks`
 
 随着`react 16.8`版本的出现，`hooks`也问世了。`hooks`解决了`class`组件饱受诟病的众多问题，比如绑定`this`的问题、组件的逻辑复用的问题等等。其实起初我对`hooks`并不十分感冒，因为那个时候笔者连`class`写法都还没掌握，再学个这玩意简直徒增烦恼。后来没办法，团队里的小伙伴都开始使用`hooks`，所以我也被动学习了一波。这不写不知道，一写就真香！！！所以赶紧学起来吧
 
-### useState
+### `useState`
 
-记住一个点，`useState`返回两个参数，一个是`state`(也就是我们的`state`)、一个是用于更新`state`的函数。其实你叫啥名都行，不过咱们为了给 hooks 一个标志，大多采用如下写法：
+记住一个点，`useState`返回两个参数，一个是`state`(也就是我们的`state`)、一个是用于更新`state`的函数。其实你叫啥名都行，不过咱们为了给 `hooks` 一个标志，大多采用如下写法：
 
-```
+```js
 const [name, setName] = useState(initState)
-复制代码
+
 ```
 
 好了，掌握这个就行了，我们来使用一下：(别忘记了，我们现在只需要写函数式组件了哦)
 
-```
+```js
 import React, { useState } from 'react'
 import { Button } from 'antd'
 
@@ -1591,18 +1591,17 @@ const Home: React.FC<Iprops> = ({ dispatch, goodsList }) => {
   )
 }
 export default Home
-复制代码
 ```
 
 当我们初次进入 `home` 页面时，页面上会显示 `info` 的初始值：`init info`，然后当我们点击按钮，调用 `setInfo`,然后 `info` 的值就被改变了。就是这么简单。
 
-### useEffect
+### `useEffect`
 
 `useEffect` 其实只比复杂了那么一点。它合成了 `calss` 组件中的`componentDidMount`、`componentDidUpdate`、 `componentWillUnmount`。 我们很容易就明白，它是用来执行副作用的，最最常见的副作用就是异步请求。
 
 下面我们用它来实现`class`组件的`componentDidMount`的用法:
 
-```
+```js
 const Home: React.FC<Iprops> = ({ dispatch, goodsList }) => {
   // 获取商品列表
   const getList = () => {
@@ -1630,14 +1629,14 @@ const mapStateToProps = (model) => ({
 })
 
 export default connect(mapStateToProps)(Home)
-复制代码
+
 ```
 
 上面的`getList`就是咱们发起异步请求的方法，我们在`useEffect`里面使用了它，同时我们还传入了一个`[]`,就表示我们只需在页面初始化的时候发起请求，这样使用就相当于`class`组件的`componentDidMount`。
 
 接下来我们再来实现`class`组件的`componentDidUpdate`的用法:
 
-```
+```js
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Button, Card } from 'antd'
@@ -1681,29 +1680,27 @@ const mapStateToProps = (model) => ({
 })
 
 export default connect(mapStateToProps)(Home)
-复制代码
+
 ```
 
 看上面，我们希望点击按钮时改变 `info` 时，它会自动再去发起请求，从而刷新页面(也就是说，`goodsList` 的数据依赖于 `info`)。可以看见，我们这里还是利用了`useEffect`的第二个参数，只不过这次我们传入的是`[info]`，意思就是告诉`useEffect`，如果 `info` 的值发生改变了，就去发起请求。这相当于我们在`class`组件的`componentDidMount`钩子。
 
 接下来还有最后一个`class`组件的`componentWillUnmount`的用法了。这个就更简单了，我们只需要在`useEffect` `return` 一个回调函数，就可以用来清除上一次副作用留下的副作用了:
 
-```
-....
+```js
+
  useEffect(() => {
     getList()
     return () => dispatch({ type: `${namespace}/clearData` })
   }, [])
-....
 
-复制代码
 ```
 
-### useRef
+### `useRef`
 
 这个`hook`更简单了，它就是用来拿到子组件的实例的，相当于`class`组件的`React.createRef()`：
 
-```
+```js
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Button, Card } from 'antd'
@@ -1750,14 +1747,14 @@ const mapStateToProps = (model) => ({
 })
 
 export default connect(mapStateToProps)(Home)
-复制代码
+
 ```
 
-### useContext
+### `useContext`
 
 `useContext`这个`hook`的作用也很简单，它可以让我们在函数组件中使用`Context`，而且它还解决了以前我们需要利用`Consumer`包裹组件的问题：
 
-```
+```js
 // context.js
 import React from 'react'
 const { Provider, Consumer } = React.createContext(null) //创建 context 并暴露Provider和Consumer
@@ -1785,12 +1782,12 @@ class Father extends React.Component {
   }
 }
 export default Father
-复制代码
+
 ```
 
 在 `class` 组件里面，我们要想拿到 Context 里面的值，必须通过 `Consumer` 包裹组件：
 
-```
+```js
 // 子组件
 import React from 'react'
 import { Consumer } from './context'
@@ -1812,12 +1809,12 @@ class Son extends React.Component {
   }
 }
 export default Son
-复制代码
+
 ```
 
 有了 `useContext`，就只需要这样:
 
-```
+```js
 // 子组件
 import React from 'react'
 funcion Son() {
@@ -1829,23 +1826,23 @@ funcion Son() {
   }
 }
 export default Son
-复制代码
+
 ```
 
 我们可以看到上面直接使用 `React.useContext(Context)` 就可以获得 `context`，而在之前的版本中需要像这样才能获取 `<Consumer>({vlaue} => {})</Consumer>` ，这极大的简化了代码的书写。
 
-### useMemo
+### `useMemo`
 
 先来看看官网给出的用法：
 
-```
+```js
 const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b])
-复制代码
+
 ```
 
 根据官网的解释和这个用法可以看出，在 `a` 和 `b` 的变量值不变的情况下，`memoizedValue`的值不变。即是：`useMemo`函数的第一个入参函数不会被执行，从而达到节省计算量的目的（有点像`vue`的计算属性）。那它有什么用呢？通常来说可以用作性能优化的手段。我们来看一个例子：
 
-```
+```js
 // 父组件
 import React, { useState } from 'react'
 import { Input } from 'antd'
@@ -1875,7 +1872,8 @@ const Home: React.FC<Iprops> = () => {
 }
 
 export default Home
-
+```
+```js
 // 子组件
 import React from 'react'
 import { Button } from 'antd'
@@ -1892,12 +1890,12 @@ const Son1: React.FC<Iprops> = ({ onVisible }) => {
   )
 }
 export default Son1
-复制代码
+
 ```
 
 在父组件中，有个`Input`输入框,每次输入新的值，父组件的`info`的值就会发生改变，同时我们发现子组件每次都会重新渲染，即使我们子组件没用到`info`的值，那是因为`setInfo`导致父组件重新渲染了，也导致`onVisible`每次都变成一个新的值，所以引起子组件重新渲染。那么有的同学就会说，可以利用`React.memo`，我们来试一试:
 
-```
+```js
 import React, { memo } from 'react'
 import { Button } from 'antd'
 
@@ -1913,12 +1911,11 @@ const Son1: React.FC<Iprops> = ({ onVisible }) => {
   )
 }
 export default memo(Son1)
-复制代码
 ```
 
 然后我们随便在输入框输入新的值，我们发现，子组件仍然会重新渲染，为什么呢？那是因为这里的`props.onVisible`是一个函数，它是一个引用类型的值，当父组件重新渲染`onVisible` 这个函数也会重新生成,这样引用地址变化就导致对比出新的数据,子组件就会重新渲染。所以我们需要缓存`onVisible`这个函数，即是：我们只需要创建一遍这个函数，以后父组件重新渲染的时候，`onVisible`的值仍然是第一次渲染的值，这样子组件才不会重新渲染。这个时候我们就用到了`useMemo`：
 
-```
+```js
 import React, { useState } from 'react'
 import { Input } from 'antd'
 import Son1 from './son1'
@@ -1949,28 +1946,25 @@ const Home: React.FC<Iprops> = () => {
 }
 
 export default Home
-复制代码
 ```
 
 可以看到，我们利用`useMemo`将`onVisible`缓存起来了,我们在`useMemo`的第二个参数传入了一个`[]`，表明它只会在渲染时执行一次，这里的用法跟`useEffect`一样，`[]`传入依赖项，当依赖项改变时，我们缓存的值才会重新计算。再次在输入框输入新的值，我们发现子组件不渲染了。
 
 > `useMemo` 一般用于计算比较复杂的场景
 
-### useCallback
+### `useCallback`
 
 如果掌握了`useMemo`，那掌握 `useCallback`简直不在话下。我们先来看看定义:
 
-```
+```js
 const memoizedCallback = useCallback(() => {
   doSomething(a, b)
 }, [a, b])
-复制代码
 ```
 
 在 `a`和`b` 的变量值不变的情况下，`memoizedCallback` 的引用不变。即：`useCallback` 的第一个入参函数会被缓存，从而达到渲染性能优化的目的。是不是跟`useMemo`很像？`useMemo`是缓存值，`useCallback`一个是缓存函数的引用。也就是说 `useCallback(fn, [deps])` 相当于 `useMemo(() => fn, [deps])`。我们现在用 `useCallback` 来改造一下刚刚上面 👆 那个例子:
 
-```
-....
+```js
 const Home: React.FC<Iprops> = () => {
   const [info, setInfo] = useState('')
   const [visible, setVisible] = useState(true)
@@ -1998,16 +1992,15 @@ const Home: React.FC<Iprops> = () => {
 }
 
 export default Home
-复制代码
 ```
 
 我相信你肯定已经看懂了，什么？没看懂？那再看一遍！
 
-### 自定义 hook
+### 自定义 `hook`
 
 借助于`react`提供的基础`hook`,我们通常也可以自定义`hook`，`react`规定我们自定义`hook`时，必须以`use`开头。我们来尝试自定义一个控制对话框的`hook`:
 
-```
+```js
 import { useState } from 'react'
 
 type returnd = [boolean, (visible?: boolean) => void]
@@ -2022,12 +2015,11 @@ const useVisible = (initVisible = false): returnd => {
 }
 
 export default useVisible
-复制代码
 ```
 
 首先我们利用`useState`声明了`visible`和`setVisible`,然后我们定义了`onVisible`这个函数用来更改`visible`，接着我们返回`[visible, onVisible]`。然后我们来看看如何使用：
 
-```
+```js
 import { Button, Modal } from 'antd'
 import useVisible from '../hooks/useVisible'
 
@@ -2053,38 +2045,34 @@ const Home: React.FC = () => {
 }
 
 export default Home
-复制代码
 ```
 
 就像我们使用其他`hook`一样方便。我们在写业务(搬砖)的过程中，我们可以尝试去将一些可复用的逻辑或者操作封装为我们自己的`hook`，这才是`hooks`的强大之处。
 
 ## 项目配置
 
-我们在开发`react`的时候，不免需要一些配置，例如别名、跨域等等。`vue`给我们提供了一个`vue.config.js`用于配置，那么`react`项目呢？我们需要用到`react-app-rewired`和`customize-cra`:
+我们在开发`react`的时候，不免需要一些配置，例如别名、跨域等等。`vue`给我们提供了一个`vue.config.js`用于配置，那么`react`项目呢？我们需要用到**`react-app-rewired`****和`customize-cra`:**
 
-```
+```shell
 yarn add react-app-rewired -D
 yarn add customize-cra -D
-复制代码
 ```
 
 安装完之后，我们需要更改一下我们的`package.json`文件：
 
-```
-....
+```json
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject"
   },
-....
-复制代码
+
 ```
 
 接着我们需要在项目的根目录新建一个`config-overrides.js`文件。接下来我们对项目进行一些配置：
 
-```
+```js
 /* config-overrides.js */
 
 const path = require('path')
@@ -2124,7 +2112,7 @@ module.exports = {
   ),
   devServer: overrideDevServer(devServerConfig()),
 }
-复制代码
+
 ```
 
 更多的配置请查看这里:[customize-cra](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Farackaf%2Fcustomize-cra%2Fblob%2Fmaster%2Fapi.md)
@@ -2172,55 +2160,55 @@ module.exports = {
 
 从图中可以看到，我把`生命周期`分为了`挂载阶段`、`更新阶段`、`卸载阶段`三个阶段。同时，在`挂载阶段`和`更新阶段`都会运行`getDerivedStateFromProps`和`render`，卸载阶段很好理解，只有一个`componentWillUnMount`，在卸载组件之前做一些事情，通常用来`清除定时器等副作用操作`。那么`挂载阶段`和`更新阶段`中的生命周期我们来逐一看下每个运行点及作用。
 
-### 1. constructor
+### 1. `constructor`
 
 在同一个类组件对象只会运行一次。所以经常来做一些`初始化`的操作。同一个组件对象被多次创建，它们的`construcotr`互不干扰。
 
 **注意：在`construcotr`中要尽量避免（最好禁止）使用`setState`。** 我们都知道使用`setState`会造成页面的重新渲染，但是在`初始化`阶段，页面都还没有将`真实DOM`挂载到页面上，那么重新渲染的又有什么意义呢。除`异步`的情况，比如`setInterval`中使用`setState`是没问题的，因为在执行的时候页面早已`渲染完成`。但也最好不要，容易一些引起奇怪的问题。
 
 ```js
-    constructor(props) {
-        super(props);
+constructor(props) {
+    super(props);
 
-        this.state = {
-            num: 1
-        };
+    this.state = {
+        num: 1
+    };
 
-        //不可以，直接Warning
+    //不可以，直接Warning
+    this.setState({
+        num: this.state.num + 1
+    });
+
+    //可以使用，但不建议
+    setInterval(()=>{
         this.setState({
             num: this.state.num + 1
         });
-
-        //可以使用，但不建议
-        setInterval(()=>{
-            this.setState({
-                num: this.state.num + 1
-            });
-        }, 1000);
-    }
+    }, 1000);
+}
 
 ```
 
 <img src="002.jpg" />
 
-### 2. 静态属性 static getDerivedStateFromProps
+### 2. 静态属性 `static getDerivedStateFromProps`
 
 该方法是一个`静态属性`，在`16`版本之前不存在，在新版`生命周期`中主要用来取代`componentWillMount`和`componentWillReceiveProps`，因为这两个`老生命周期`方法在一些开发者不规范的使用下极容易产生一些`反模式`的bug。因为是`静态方法`，所以你在其中根本拿不到`this`，更不可能调用`setState`。
 
 该方法在`挂载阶段`和`更新阶段`都会运行。它有两个参数`props`和`state`当前的`属性值`和`状态`。它的返回值会合并掉当前的`状态（state）`。如果返回了非`Object`的值，那么它啥都不会做，如果返回的是`Object`，那么它将会跟当前的状态合并，可以理解为**Object.assign**[1]。通常情况下，几乎不怎么使用该方法。
 
 ```js
-    /**
-     * 静态方法，首次挂载和更新渲染都会运行该方法
-     * @param {*} props 当前属性
-     * @param {*} state 当前状态
-     */
-    static getDerivedStateFromProps(props, state){
-        // return 1; //没用
-        return {
-            num: 999,   //合并到当前state对象
-        };
-    }
+/**
+ * 静态方法，首次挂载和更新渲染都会运行该方法
+ * @param {*} props 当前属性
+ * @param {*} state 当前状态
+ */
+static getDerivedStateFromProps(props, state){
+    // return 1; //没用
+    return {
+        num: 999,   //合并到当前state对象
+    };
+}
 
 ```
 
@@ -2228,16 +2216,16 @@ module.exports = {
 
 最重要的`生命周期`，没有之一。用来生成`虚拟节点（vDom）`树。该方法只要遇到需要重新渲染都会运行。同样的，在`render`中也严禁使用`setState`，因为会导致无限`递归`重新渲染导致`爆栈`。
 
-```
-    render() {
-        //严禁使用！！！
-        this.setState({
-            num: 1
-        })
-        return (
-            <>{this.state.num}</>
-        )
-    }
+```js
+render() {
+    //严禁使用！！！
+    this.setState({
+        num: 1
+    })
+    return (
+        <>{this.state.num}</>
+    )
+}
 
 ```
 
@@ -2248,14 +2236,14 @@ module.exports = {
 该方法只会运行一次，在`首次渲染`时页面将`真实DOM`挂载完毕之后运行。通常在这里做一些`异步操作`，比如开启定时器、发起网络请求、获取`真实DOM`等。在该方法中，可以大胆使用`setState`，因为页面已经渲染完成。执行完该`钩子函数`后，组件正式进入到`活跃`状态。
 
 ```js
-    componentDidMount(){
-        // 初始化或异步代码...
-        this.setState({});
+componentDidMount(){
+    // 初始化或异步代码...
+    this.setState({});
 
-        setInterval(()=>{});
+    setInterval(()=>{});
 
-        document.querySelectorAll("div");
-    }
+    document.querySelectorAll("div");
+}
 
 ```
 
@@ -2266,19 +2254,19 @@ module.exports = {
 在`React`中，官方给我们实现好了一个基础版的优化组件`PureComponent`，就是一个`HOC`高阶组件，内部实现就是帮我们用`shouldComponentUpdate`做了浅比较优化。如果安装了`React`代码提示的插件，我们可以直接使用`rpc` + `tab键`来生成模版。**注意：继承了`PureComponent`后不需要再使用`shouldComponentUpdate`进行优化。**
 
 ```js
-    /**
-     * 决定是否要进行重新渲染
-     * @param {*} nextProps 此次更新的属性
-     * @param {*} nextState 此次更新的状态
-     * @returns {boolean}
-     */
-    shouldComponentUpdate(nextProps, nextState){
-        // 伪代码，如果当前的值和下一次的值相等，那么就没有更新渲染的必要了
-        if(this.props === nextProps && this.state === nextState){
-            return false;
-        }
-        return true;
+/**
+ * 决定是否要进行重新渲染
+ * @param {*} nextProps 此次更新的属性
+ * @param {*} nextState 此次更新的状态
+ * @returns {boolean}
+ */
+shouldComponentUpdate(nextProps, nextState){
+    // 伪代码，如果当前的值和下一次的值相等，那么就没有更新渲染的必要了
+    if(this.props === nextProps && this.state === nextState){
+        return false;
     }
+    return true;
+}
 
 ```
 
@@ -2289,17 +2277,17 @@ module.exports = {
 比如我突然想针对具有某个`class`的真实元素做一些事情。那么就可以在此方法中获取元素并修改。该函数有两个参数`prevProps`和`prevState`表示此次更新前的`属性`和`状态`，该函数的`返回值（snapshot）`会作为`componentDidUpdate`的第三个参数。
 
 ```js
-    /**
-     * 获取更新前的快照，通常用来做一些附加的DOM操作
-     * @param {*} prevProps 更新前的属性
-     * @param {*} prevState 更新前的状态
-     */
-    getSnapshotBeforeUpdate(prevProps, prevState){
-        // 获取真实DOM在渲染到页面前做一些附加操作...
-        document.querySelectorAll("div").forEach(it=>it.innerHTML = "123");
-        
-        return "componentDidUpdate的第三个参数";
-    }
+/**
+ * 获取更新前的快照，通常用来做一些附加的DOM操作
+ * @param {*} prevProps 更新前的属性
+ * @param {*} prevState 更新前的状态
+ */
+getSnapshotBeforeUpdate(prevProps, prevState){
+    // 获取真实DOM在渲染到页面前做一些附加操作...
+    document.querySelectorAll("div").forEach(it=>it.innerHTML = "123");
+    
+    return "componentDidUpdate的第三个参数";
+}
 
 ```
 
@@ -2308,15 +2296,15 @@ module.exports = {
 该方法是`更新阶段`最后运行的`钩子函数`，跟`getSnapshotBeforeUpdate`不同的是，它的运行时间点是在`真实DOM`挂载到页面后。通常也会使用该方法来操作一些`真实DOM`。它有三个参数分别是`prevProps`、`prevState`、`snapshot`，跟Snapshot`钩子函数`一样，表示更新前的`属性`、`状态`、`Snapshot`钩子函数的返回值。
 
 ```js
-    /**
-     * 通常用来获取真实DOM做一些操作
-     * @param {*} prevProps 更新前的属性
-     * @param {*} prevState 更新前的状态
-     * @param {*} snapshot  getSnapshotBeforeUpdate的返回值
-     */
-    componentDidUpdate(prevProps, prevState, snapshot){
-        document.querySelectorAll("div").forEach(it=>it.innerHTML = snapshot);
-    }
+/**
+ * 通常用来获取真实DOM做一些操作
+ * @param {*} prevProps 更新前的属性
+ * @param {*} prevState 更新前的状态
+ * @param {*} snapshot  getSnapshotBeforeUpdate的返回值
+ */
+componentDidUpdate(prevProps, prevState, snapshot){
+    document.querySelectorAll("div").forEach(it=>it.innerHTML = snapshot);
+}
 
 ```
 
@@ -2325,12 +2313,12 @@ module.exports = {
 如开头提到的，该`钩子函数`属于卸载阶段中唯一的方法。如果组件在`渲染`的过程中被卸载了，`React`会报出`Warning：Can't perform a React state update on an unmounted component`的警告，所以通常在组件被卸载时做`清除副作用的操作`。
 
 ```js
-    componentWillUnmount(){
-        // 组件被卸载前清理副作用...
-        clearInterval(timer1);
-        clearTimeout(timer2);
-        this.setState = () => {};
-    }
+componentWillUnmount(){
+    // 组件被卸载前清理副作用...
+    clearInterval(timer1);
+    clearTimeout(timer2);
+    this.setState = () => {};
+}
 
 ```
 
@@ -2338,7 +2326,7 @@ module.exports = {
 
 
 
-## React element（初始元素）
+## `React element`（初始元素）
 
 先来认识下第一个概念，就是`React element`，what？当我伞兵？我还不知道什是`element`？别激动，这里的元素不是指`真实DOM`中的元素，而是通过`React.createElement`创建的`类似`真实DOM的元素。比如我们在开发中通过语法糖`jsx`写出来的`html`结构都是`React element`，为了跟`真实DOM`区分开来，本文就统称为`React初始元素`。
 
@@ -2376,7 +2364,7 @@ export default class App extends PureComponent {
 
 <img src="004.jpg" />
 
-### 2. 组件节点（ReactComposite）
+### 2. 组件节点（`ReactComposite`）
 
 > 当`初始元素`的`type`属性为`函数`或是`类`的时候，`React`就会创建`虚拟组件节点`。
 
@@ -2683,25 +2671,19 @@ export default class App extends PureComponent {
 
 针对`类组件`，`React`也会重用之前的`实例对象`。后续步骤如下：
 
-1. ```
-   运行`生命周期`静态方法`static getDerivedStateFromProps`。将返回值合并当前状态。
-   ```
+1. 运行`生命周期`静态方法`static getDerivedStateFromProps`。将返回值合并当前状态。
 
-2. ```
-   运行`生命周期`方法`shouldComponentUpdate`，如果该方法返回`false`，终止当前流程。
-   ```
 
-3. ```
-   运行`生命周期`方法`render`，得到新的`vDom`树，进行新旧两棵树的递归`对比更新`。
-   ```
+2. 运行`生命周期`方法`shouldComponentUpdate`，如果该方法返回`false`，终止当前流程。
+   
+3. 运行`生命周期`方法`render`，得到新的`vDom`树，进行新旧两棵树的递归`对比更新`。
 
-4. ```
-   将`生命周期`方法`getSnapshotBeforeUpdate`加入到队列等待执行。
-   ```
 
-5. ```
-   将`生命周期`方法`componentDidUpdate`加入到队列等待执行。
-   ```
+4. 将`生命周期`方法`getSnapshotBeforeUpdate`加入到队列等待执行。
+
+
+5. 将`生命周期`方法`componentDidUpdate`加入到队列等待执行。
+   
 
 ```js
 import React, {Component} from 'react'
@@ -2747,7 +2729,7 @@ export default class App extends Component {
 
 对于文本节点，同样的`React`也会重用之前的`真实文本节点`。将新的文本记录下来，等待将来统一更新（设置`nodeValue`）。
 
-```
+```js
 import React, { PureComponent } from 'react'
 
 export default class App extends PureComponent {
@@ -2875,13 +2857,9 @@ export default class App extends PureComponent {
 
 从图中可以看到，哪怕经过条件渲染前后`button`理论上没有任何变化的情况下，照样没有重用之前的`真实DOM`，如果在`button`之后还有`一万个`兄弟节点，那么也全部都找不到对比目标从而进行`卸载`重新创建流程。所以在进行`条件渲染`显示隐藏时，官方推荐以下做法：
 
-1. ```
-   控制`style：visibility`来控制显示隐藏。
-   ```
+1. 控制`style：visibility`来控制显示隐藏。
 
-2. ```
-   在隐藏时给一个`空节点`来保证对比前后能找到同一位置。不影响后续`兄弟节点`的比较。
-   ```
+2. 在隐藏时给一个`空节点`来保证对比前后能找到同一位置。不影响后续`兄弟节点`的比较。
 
 ```js
 this.state.flag ? <div></div> : false
@@ -2890,7 +2868,7 @@ this.state.flag ? <div></div> : false
 
 ## 来点栗子加深印象
 
-**1. 是否重用了真实DOM**
+**1. 是否重用了真实`DOM`**
 
 ```js
 import React, { PureComponent } from 'react'
@@ -2934,7 +2912,7 @@ export default class App extends PureComponent {
 
 <img src="022.gif" />
 
-**2. 一个神奇的效果**
+## **2. 一个神奇的效果**
 
 ```js
 import React, { PureComponent } from 'react'
@@ -2978,11 +2956,12 @@ export default class App extends PureComponent {
 
 从图中可以看到，我们输入了密码后，`重新渲染`生成了新的DOM，但是里面的密码还存在。这就很好的证明了`React`是如何重用`真实DOM`的。
 
-**一道面试题**
+## **一道面试题**
 
 ```js
 import React, { PureComponent } from 'react'
 
+//ClassCompA 组件
 class ClassCompA extends PureComponent {
     componentDidMount() {
         console.log("111 ClassCompA componentDidMount");
@@ -2996,7 +2975,7 @@ class ClassCompA extends PureComponent {
         return (<div className="ClassCompA"></div>)
     }
 }
-
+//ClassCompB 组件
 class ClassCompB extends PureComponent {
     componentDidMount() {
         console.log("333 ClassCompB componentDidMount");
@@ -3009,7 +2988,7 @@ class ClassCompB extends PureComponent {
     }
 }
 
-
+//ClassCompC 组件
 class ClassCompC extends PureComponent {
     componentDidMount() {
         console.log("444 ClassCompC componentDidMount");
@@ -3020,7 +2999,7 @@ class ClassCompC extends PureComponent {
     }
 }
 
-
+//APP 组件
 export default class App extends PureComponent {
     state = {
         flag: true,
@@ -3050,20 +3029,30 @@ export default class App extends PureComponent {
 
 ```
 
-**问：首次渲染和按下button控制台输出的顺序是什么？**
+## **问：首次渲染和按下 `button` 控制台输出的顺序是什么？**
 
 看的仔细的同学，相信根本就难不倒你，我们一起来捋一捋。
 
 1. 首先，最外层的组件是`App`，所以开始`App`的挂载流程，运行`render`的过程中发现`条件渲染`先渲染`ClassCompA`。
+
 2. 进入`ClassCompA`的挂载流程，没啥好渲染的就一个div，执行完`render`后将`componentDidMount`加入到队列中等待执行。此时队列里是`[111]`。
+
 3. `App`再针对初始元素`button`做处理后，`render`执行结束，将自己的`componentDidMount`加入到队列中等待执行，此时队列里是`[111、666]`。
+
 4. `React`根据`虚拟节点`生成`真实DOM`后，保存`vDom`树，开始运行队列。此时控制台打印`111`、`666`。
+
 5. 按下`button`后，调用`setState`进行重新渲染，此时`App`还会运行两个生命周期方法 `getDerivedStateFromProps`和`shouldComponentUpdate`，然后运行`render`，生成新的`vDom`树。
+
 6. 进入新旧两棵树的`对比更新`，虽然都是`组件节点`，但生成出的实例不同，认为是不相同的`节点类型`。开始卸载旧节点`ClassCompA`，并将`ComponentWillUnMount`加入到执行队列，等待执行。此时队列`[222]`。
+
 7. 进入新节点挂载流程，创建`ClassCompB`实例，调用`render`生成`虚拟节点`。发现存在`组件节点ClassCompC`。再次进入到新节点挂载流程，创建实例。
+
 8. `ClassComC`运行完`render`生成`vDom`树，将自己的`componentDidMount`加入到队列，等待将来执行。此时队列`[222、444]`。
+
 9. 挂载完`ClassComC`后，`ClassComB`的`render`才算结束，此时将自己的`componentDidMount`加入到队列，等待执行，此时队列`[222、444、333]`。
+
 10. 此时`App`的`render`才算结束，将自己的`componentDidUpdate`加入到队列，等待执行。此时队列`[222、444、333、555]`。
+
 11. 将根据`虚拟节点`生成的`真实DOM`挂载到页面上后，开始执行队列。控制台输出`222`、`444`、`333`、`555`。
 
 # 总结

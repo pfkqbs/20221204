@@ -9,12 +9,16 @@
 		<div id="test">
 			
 		</div>
+		<div id="demo">
+			
+		</div>
 		
 		<script src="./react_js/react.development.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./react_js/react-dom.development.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./react_js/babel.min.js" type="text/javascript" charset="utf-8"></script>
 		
 		<script type="text/babel">/*  这里必须是babel  */
+
 			// 创建虚拟Dom
 			const vDom = (
 			<h1 id="title">
@@ -25,13 +29,18 @@
 			//渲染虚拟Dom
 			ReactDOM.render(vDom,document.getElementById('test'))
 			
-			console.log('vDOM',vDom)
+			const  TDOM = document.getElementById('demo')
+			console.log('虚拟DOM',vDom)
+			console.log('真实',TDOM)
+			debugger;
 			console.log('类型',typeof vDom)
 			console.log('vDOM',vDom instanceof Object)
 			
-			// 虚拟DOM其实就是Object类型的对象（一般对象）
-			// 虚拟DOM比较轻，真实DOM比较重，因为虚拟DOM是react内部使用，无需真实DOM那么多属性。
-			// 虚拟DOM最终会被React 转化为真实DOM
+			/* 关于虚拟DOM:
+			虚拟DOM其实就是Object类型的对象（一般对象）
+			虚拟DOM比较轻，真实DOM比较重，因为虚拟DOM是react内部使用，无需真实DOM那么多属性。
+			虚拟DOM最终会被React 转化为真实DOM
+			*/
 			
 		</script>
 	</body>
