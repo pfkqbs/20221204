@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        html{
+            height:100%;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #canvas {
+            width: 100%;
+            height: 100%;
+            /* background: #000; */
+        }
+        h1{
+            position: absolute;
+            top:-100px;
+            left:0;
+            right:0;
+            top:0;
+            bottom:0;
+            margin: auto;
+            height: 200px;
+            line-height: 200px;
+            font-size: 100px;
+            text-align: center;
+        }
+        @keyframes blink{
+            0%{
+                opacity: 1;
+                color:red;
+            }
+            50%{
+                opacity: 0.5;
+                color: firebrick;
+            }
+            75%{
+                opacity: 0.5;
+                color: deeppink;
+            }
+            100%{
+                opacity: 0;
+                color: red;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="title" class="blink">12</h1>
+    <!--  -->
+    <canvas id="canvas"></canvas>
+    <script>
+        let title = document.querySelector('#title')
+        let num = Number(title.innerHTML)
+        function run(){
+            console.log(num)
+            num = num -1
+            title.innerHTML = num
+            if(num === 0 || num < 0){
+                title.innerHTML = "新年快乐"
+                clearInterval(time)             
+            }
+        }
+        let time = setInterval(run,1000)
+    </script>
+
+    <script src="./index.js"></script>
+
+    <script>
+        
+        let  screen = new Scene('#canvas')
+    </script>
+</body>
+
+</html>

@@ -18,7 +18,7 @@
         - 1、发送请求获取数据，
         - 2、处理数据（过滤，整理格式等 
         - 3、<font color="red">操作`DOM`呈现页面</font> `React` 只负责这部分 )
-        - <font color="red">核心：`React` 是一个将数据渲染为 `HTML` 视图的开源 `JavaScript` 库</font>
+        - 4、<font color="red">核心：`React` 是一个将数据渲染为 `HTML` 视图的开源 `JavaScript` 库</font>
 
     - 2.由 `Facebook` 开源
 
@@ -374,7 +374,7 @@ ReactDOM.render(vDom,document.getElementById('test'))
 
 #### 2.1.1. 使用`React`开发者工具调试
 
-#### 2.1.2. 效果
+#### 2.1.2. 函数式组件 和 类式组件
 
 - 函数式组件：
 
@@ -406,7 +406,7 @@ ReactDOM.render(<Demo />,document.getElementById('test'))
 //1--创建类式组件
 class MyComponent extends React.Component{
     
-    render(){
+    render(){  //render 必须写，必须由返回值
         return (
             <h2>我是类式组件！适用于复杂组件</h2>
             )
@@ -417,9 +417,12 @@ class MyComponent extends React.Component{
 ReactDOM.render(<MyComponent />,document.getElementById('test'))
 
 // 执行了React.render(<>)之后，发生了什么？
-// 在React解析组件标签，找到了组件
-// 发现组件是使用类定义的，随后new出了该类的实例，并通过该实例调用到原型上的render方法
-//将rander返回的虚拟Dom转为真实DOM，随后呈现在页面中。
+
+//1-- 在React解析  组件标签 ，找到了组件MyComponent
+
+//2-- 发现组件是使用类定义的，随后 new 出了该类的实例，并通过该实例调用到原型上的 render 方法
+
+//3-- 将 rander 返回的虚拟 Dom 转为真实 DOM，随后呈现在页面中。
 ```
 
 #### 2.1.3. 注意
@@ -446,6 +449,30 @@ ReactDOM.render(<MyComponent />,document.getElementById('test'))
 
 2.点击文字切换天气
 
+```js
+//创建类式组件(有状态的组件就叫复杂组件) 借助构造器初始化状态，读取state 
+class Weather extends React.Component {
+    constructor(props) {
+    super(props)
+    // 初始化状态
+    this.state = {isHot: false,}
+    }
+    render() {
+        // 读取状态
+    const { isHot } = this.state  //解构
+    return (
+        <div>
+        <div>
+            <h1>{ isHot ? "天气炎热" : "不热" }</h1>
+        </div>
+        </div>
+    )
+    }
+}
+        
+//渲染组件到页面
+ReactDOM.render(<Weather />,document.getElementById('test'))
+```
 #### 2.2.2. 理解
 
 1.`state`是组件对象最重要的属性, 值是对象(可以包含多个`key-value`的组合)
