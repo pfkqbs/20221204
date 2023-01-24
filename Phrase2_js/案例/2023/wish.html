@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name='viewport'
+    content='width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no' />
+  <link rel="icon" href="/logo.png">
+  <title>兔年第一杯喝什么</title>
+  <meta name="description" content="选择喜欢的奶茶，抽取你的新年幸运签吧～" />
+  <meta name="keywords" content="兔年,第一杯喝什么,奶茶" />
+  <style>
+    .share-img {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      display: block;
+      opacity: 0;
+    }
+  </style>
+  <% if(VITE_BD_HM=='true' ){ %>
+    <script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?f372c1ba71f166a30054c8fc307a2041";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+    <% } %>
+</head>
+
+<body>
+  <header>
+    <div class="share-img">
+      <img style="width: 300px;height:300px;" style="display:block" src="https://what-to-drink.gitee.io/2023/logo.png"
+        alt="logo">
+    </div>
+  </header>
+  <div id="app"></div>
+  <div class="share-img">
+    <img style="width: 300px;height:300px;" style="display:block" src="https://what-to-drink.gitee.io/2023/logo.png"
+      alt="logo">
+  </div>
+  <script type="module" src="/src/modules/wish/index.ts"></script>
+  <link rel="stylesheet" href="/lib/message.min.css">
+  <script src="/lib/message.min.js"></script>
+</body>
+
+</html>
