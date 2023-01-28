@@ -1,0 +1,19 @@
+{
+  "name": "qiankun-demo",
+  "version": "1.0.0",
+  "description": "qiankun-demo-case",
+  "main": "index.js",
+  "scripts": {
+    "all:install": "npm-run-all --serial install:*",
+    "all:dev": "npm-run-all --parallel dev:*",
+    "install:react-demo": "cd react-demo && npm i",
+    "dev:react-demo": "cd react-demo && npm run dev:dev",
+    "install:vue-demo": "cd vue-demo && npm i",
+    "dev:vue-demo": "cd vue-demo && npm run dev"
+  },
+  "author": "我隔这敲代码呢",
+  "license": "ISC",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
